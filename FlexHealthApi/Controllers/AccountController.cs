@@ -21,7 +21,7 @@ namespace FlexHealthApi.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpGet("GetUser/")]
+        [HttpGet("GetUser")]
         [Authorize]
         public async Task<IActionResult> GetUser()
         {
