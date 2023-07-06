@@ -29,7 +29,7 @@ namespace FlexHealthInfrastructure.Services
             _mapper = mapper;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenKey"]));
         }
-        public async Task<string> GetToken(UserUpdateDto userUpdateDto)
+        public async Task<string> GetToken(UserDto userUpdateDto)
         {
             var user = _mapper.Map<User>(userUpdateDto);
             if (user == null) return null;
