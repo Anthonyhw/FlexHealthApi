@@ -23,5 +23,8 @@ namespace FlexHealthDomain.Models
 
         [Required]
         public User Usuario { get; set; }
+
+        [Required]
+        public bool Visibilidade { get; set; }
     }
 }

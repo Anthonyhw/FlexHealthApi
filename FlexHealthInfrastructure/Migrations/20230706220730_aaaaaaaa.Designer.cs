@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHealthInfrastructure.Migrations
 {
     [DbContext(typeof(FlexHealthContext))]
-    [Migration("20230610033015_TentandoIdentity")]
-    partial class TentandoIdentity
+    [Migration("20230706220730_aaaaaaaa")]
+    partial class aaaaaaaa
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,15 +75,19 @@ namespace FlexHealthInfrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("EstabelecimentoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FotoPerfil")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Genero")
                         .IsRequired()
@@ -94,10 +98,6 @@ namespace FlexHealthInfrastructure.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Nascimento")
                         .HasColumnType("datetime2");
@@ -130,14 +130,6 @@ namespace FlexHealthInfrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -146,8 +138,6 @@ namespace FlexHealthInfrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EstabelecimentoId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -208,35 +198,6 @@ namespace FlexHealthInfrastructure.Migrations
                     b.ToTable("tfh_consultas");
                 });
 
-            modelBuilder.Entity("FlexHealthDomain.Models.Estabelecimento", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Cnpj")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tfh_estabelecimentos");
-                });
-
             modelBuilder.Entity("FlexHealthDomain.Models.Exame", b =>
                 {
                     b.Property<int>("Id")
@@ -251,6 +212,9 @@ namespace FlexHealthInfrastructure.Migrations
                     b.Property<DateTime>("DataMarcacao")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MedicoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -260,40 +224,11 @@ namespace FlexHealthInfrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MedicoId");
+
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("tfh_exames");
-                });
-
-            modelBuilder.Entity("FlexHealthDomain.Models.Medico", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Crm")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Especialidade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EstabelecimentoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EstabelecimentoId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("tfh_medicos");
                 });
 
             modelBuilder.Entity("FlexHealthDomain.Models.Resultado", b =>
@@ -310,6 +245,9 @@ namespace FlexHealthInfrastructure.Migrations
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Visibilidade")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -406,13 +344,6 @@ namespace FlexHealthInfrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FlexHealthDomain.Identity.User", b =>
-                {
-                    b.HasOne("FlexHealthDomain.Models.Estabelecimento", null)
-                        .WithMany("Medicos")
-                        .HasForeignKey("EstabelecimentoId");
-                });
-
             modelBuilder.Entity("FlexHealthDomain.Identity.UserRole", b =>
                 {
                     b.HasOne("FlexHealthDomain.Identity.Role", "Role")
@@ -437,7 +368,7 @@ namespace FlexHealthInfrastructure.Migrations
                     b.HasOne("FlexHealthDomain.Identity.User", "Medico")
                         .WithMany()
                         .HasForeignKey("MedicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FlexHealthDomain.Identity.User", "Usuario")
@@ -453,32 +384,21 @@ namespace FlexHealthInfrastructure.Migrations
 
             modelBuilder.Entity("FlexHealthDomain.Models.Exame", b =>
                 {
+                    b.HasOne("FlexHealthDomain.Identity.User", "Medico")
+                        .WithMany()
+                        .HasForeignKey("MedicoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("FlexHealthDomain.Identity.User", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Medico");
 
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("FlexHealthDomain.Models.Medico", b =>
-                {
-                    b.HasOne("FlexHealthDomain.Models.Estabelecimento", "Estabelecimento")
-                        .WithMany()
-                        .HasForeignKey("EstabelecimentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FlexHealthDomain.Identity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Estabelecimento");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FlexHealthDomain.Models.Resultado", b =>
@@ -536,11 +456,6 @@ namespace FlexHealthInfrastructure.Migrations
             modelBuilder.Entity("FlexHealthDomain.Identity.User", b =>
                 {
                     b.Navigation("Acessos");
-                });
-
-            modelBuilder.Entity("FlexHealthDomain.Models.Estabelecimento", b =>
-                {
-                    b.Navigation("Medicos");
                 });
 #pragma warning restore 612, 618
         }
