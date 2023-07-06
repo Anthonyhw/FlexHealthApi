@@ -25,5 +25,9 @@ namespace FlexHealthDomain.Models
         public int UsuarioId { get; set; }
 
         public User Usuario { get; set; }
+
+        public int MedicoId { get; set; }
+
+        public User Medico { get; set; }
     }
 }

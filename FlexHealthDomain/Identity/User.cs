@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlexHealthDomain.Identity
 {
@@ -31,5 +26,7 @@ namespace FlexHealthDomain.Identity
 
         [Required]
         public IEnumerable<UserRole> Acessos { get; set; }
+
+        public string FotoPerfil { get; set; }
     }
 }
