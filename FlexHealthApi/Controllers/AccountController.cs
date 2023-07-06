@@ -64,10 +64,10 @@ namespace FlexHealthApi.Controllers
             {
                 var user = await _accountService.GetUser(userLogin.Username);
                 if (user == null) user = await _accountService.GetUser(userLogin.Email);
-                if (user == null) return Unauthorized("Usuário inválido!");
+                if (user == null) return Unauthorized("Usuário ou senha inválidos!");
 
                 var result = await _accountService.CheckUserPasswordAsync(user, userLogin.Password);
-                if (!result.Succeeded) return Unauthorized();
+                if (!result.Succeeded) return Unauthorized("Usuário ou senha inválidos!");
 
                 return Ok(new
                 {
@@ -79,6 +79,33 @@ namespace FlexHealthApi.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar usuário: {ex.Message}");
+            }
+        }
+
+        [HttpPut("Update")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDto user)
+        {
+            try
+            {
+                var checkUser = await _accountService.GetUser(user.UserName);
+                if (checkUser == null) return Unauthorized("Usuário inválido!");
+                
+                user.Id = checkUser.Id;
+
+                var result = await _accountService.UpdateAccount(user);
+                if (result == null) return NoContent();
+
+                return Ok(new
+                {
+                    Username = result.UserName,
+                    Nome = result.Nome,
+                    Token = _tokenService.GetToken(checkUser).Result
+                });
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Atualizar usuário: {ex.Message}");
             }
         }
     }

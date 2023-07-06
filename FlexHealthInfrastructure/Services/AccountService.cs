@@ -24,7 +24,7 @@ namespace FlexHealthInfrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password)
+        public async Task<SignInResult> CheckUserPasswordAsync(UserDto userUpdateDto, string password)
         {
             try
             {
@@ -59,14 +59,14 @@ namespace FlexHealthInfrastructure.Services
             }
         }
 
-        public async Task<UserUpdateDto> GetUser(string email)
+        public async Task<UserDto> GetUser(string email)
         {
             try
             {
                 var user = await _accountRepository.GetUserAsync(email);
                 if (user == null) return null;
 
-                var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
+                var userUpdateDto = _mapper.Map<UserDto>(user);
                 return userUpdateDto;
             }
             catch (Exception ex)
@@ -82,12 +82,12 @@ namespace FlexHealthInfrastructure.Services
                 var user = await _accountRepository.GetUserAsync(userUpdateDto.Email);
                 if (user == null) return null;
 
-                _mapper.Map(userUpdateDto, user);
+                var updatedUser = _mapper.Map(userUpdateDto, user);
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
-
-                _accountRepository.Update<User>(user);
+                if (userUpdateDto.Password != "") {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                }
 
                 if (await _accountRepository.SaveChangesAsync())
                 {

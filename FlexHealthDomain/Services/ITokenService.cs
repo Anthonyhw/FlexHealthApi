@@ -9,6 +9,6 @@ namespace FlexHealthDomain.Services
 {
     public interface ITokenService
     {
-        Task<string> GetToken(UserUpdateDto userUpdateDto);
+        Task<string> GetToken(UserDto userUpdateDto);
     }
 }
