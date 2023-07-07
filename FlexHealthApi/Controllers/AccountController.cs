@@ -39,13 +39,16 @@ namespace FlexHealthApi.Controllers
 
         [HttpPost("Register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] UserDto userDto)
+        public async Task<IActionResult> Register([FromBody] RegisterUserDto userDto)
         {
             try
             {
                 if (await _accountService.VerifyCpf(userDto.Cpf)) return BadRequest("CPF já cadastrado no sistema!");
                 if (await _accountService.VerifyRg(userDto.Rg)) return BadRequest("RG já cadastrado no sistema!");
                 if (await _accountService.VerifyEmail(userDto.Email)) return BadRequest("E-mail já cadastrado no sistema!");
+                // Necesário fazer verificação de CNPJ também
+                
+
                 var user = await _accountService.CreateAccount(userDto);
                 if (user != null) return Ok(user);
                 return BadRequest("Não foi possível criar o usuário!");
@@ -107,6 +110,22 @@ namespace FlexHealthApi.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Atualizar usuário: {ex.Message}");
             }
+        }
+
+        [HttpPost("Claim")]
+        public async Task<IActionResult> AddClaim([FromBody] string claim, string value)
+        {
+            var result = _accountService.AddClaim(User.Email(), claim, value);
+            if (result == null) return NoContent();
+            return Ok(result);
+        }
+
+        [HttpPost("Role")]
+        public async Task<IActionResult> AddRole([FromBody] string role)
+        {
+            var result = _accountService.AddRole(User.Email(), role); 
+            if (result == null) return NoContent();
+            return Ok() ;
         }
     }
 }

@@ -8,10 +8,12 @@ namespace FlexHealthDomain.Services
     {
         Task<UserDto> GetUser(string username);
         Task<SignInResult> CheckUserPasswordAsync(UserDto userUpdateDto, string password);
-        Task<UserDto> CreateAccount(UserDto userDto);
+        Task<UserDto> CreateAccount(RegisterUserDto userDto);
         Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto);
         Task<bool> VerifyCpf(string cpf);
         Task<bool> VerifyRg(string rg);
         Task<bool> VerifyEmail(string email);
+        Task AddClaim(string email, string claim, string value);
+        Task AddRole(string email, string role);
     }
 }

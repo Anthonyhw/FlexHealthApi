@@ -9,7 +9,8 @@ namespace FlexHealthApi.Helpers
         public FlexHealthProfile() 
         {
             CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<User, UserUpdateDto>().ReverseMap();
+            CreateMap<User, UserUpdateDto>().ReverseMap(); 
+            CreateMap<User, RegisterUserDto>().ReverseMap();
         }
     }
 }

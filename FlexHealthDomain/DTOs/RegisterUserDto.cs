@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FlexHealthDomain.DTOs
 {
-    public class UserDto
+    public class RegisterUserDto
     {
         public int Id { get; set; }
         public string UserName { get; set; }
@@ -30,5 +30,9 @@ namespace FlexHealthDomain.DTOs
         public string Email { get; set; }
 
         public string Password { get; set; }
+        public string Cnpj { get; set; }
+        public string Crm { get; set; }
+        public string Tipo { get; set; }
+
     }
 }
