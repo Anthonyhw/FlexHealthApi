@@ -83,8 +83,14 @@ namespace FlexHealthInfrastructure.Services
                 var user = await _accountRepository.GetUserAsync(email);
                 if (user == null) return null;
 
-                var userUpdateDto = _mapper.Map<UserDto>(user);
-                return userUpdateDto;
+                var userDto = _mapper.Map<UserDto>(user);
+
+                var claims = await _userManager.GetClaimsAsync(user);
+                userDto.Claims = claims.Select(c => new ClaimsDto() { Type = c.Type, Value = c.Value });
+
+                userDto.Roles = await _userManager.GetRolesAsync(user);
+                
+                return userDto;
             }
             catch (Exception ex)
             {
