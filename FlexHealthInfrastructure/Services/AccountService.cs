@@ -6,6 +6,8 @@ using FlexHealthDomain.Repositories;
 using FlexHealthDomain.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Claims;
 
 namespace FlexHealthInfrastructure.Services
 {
@@ -38,7 +40,7 @@ namespace FlexHealthInfrastructure.Services
             }
         }
 
-        public async Task<UserDto> CreateAccount(UserDto userDto)
+        public async Task<UserDto> CreateAccount(RegisterUserDto userDto)
         {
             try
             {
@@ -47,6 +49,21 @@ namespace FlexHealthInfrastructure.Services
 
                 if (result.Succeeded)
                 {
+                    if (userDto.Tipo == "Clinica" || userDto.Tipo == "Consultorio")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Estabelecimento");
+                        await _userManager.AddClaimAsync(user, new Claim("CNPJ", userDto.Cnpj));
+                        await _userManager.AddClaimAsync(user, new Claim("Tipo", userDto.Tipo));
+                    }
+                    else if (userDto.Tipo == "Medico")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Medico");
+                        await _userManager.AddClaimAsync(user, new Claim("CRM", userDto.Crm));
+                    }else
+                    {
+                        await _userManager.AddToRoleAsync(user, "Paciente");
+                    }
+
                     var userToReturn = _mapper.Map<UserDto>(user);
                     return userToReturn;
                 }
@@ -108,7 +125,7 @@ namespace FlexHealthInfrastructure.Services
         {
             try
             {
-                return await _userManager.Users.AnyAsync(user => user.Cpf == cpf);
+                return cpf == "Empresa" ? false : await _userManager.Users.AnyAsync(user => user.Cpf == cpf);
             }
             catch (Exception ex)
             {
@@ -119,7 +136,7 @@ namespace FlexHealthInfrastructure.Services
         {
             try
             {
-                return await _userManager.Users.AnyAsync(user => user.Rg == rg);
+                return rg == "Empresa" ? false : await _userManager.Users.AnyAsync(user => user.Rg == rg);
             }
             catch (Exception ex)
             {
@@ -136,6 +153,30 @@ namespace FlexHealthInfrastructure.Services
             {
                 throw new Exception($"Erro ao tentar verificar usuário: {ex.Message}");
             }
+        }
+
+        public async Task AddClaim(string email, string claim, string value)
+        {
+            var user = _accountRepository.GetUserAsync(email).Result;
+            var result = await _userManager.AddClaimAsync(user, new Claim(claim, value));
+
+            if (result.Succeeded)
+            {
+                return;
+            }
+            return;
+        }
+
+        public async Task AddRole(string email, string role)
+        {
+            var user = _accountRepository.GetUserAsync(email).Result;
+            var result = await _userManager.AddToRoleAsync(user, role);
+
+            if (result.Succeeded)
+            {
+                return;
+            }
+            return;
         }
     }
 }
