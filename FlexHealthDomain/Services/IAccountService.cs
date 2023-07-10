@@ -15,5 +15,6 @@ namespace FlexHealthDomain.Services
         Task<bool> VerifyEmail(string email);
         Task AddClaim(string email, string claim, string value);
         Task AddRole(string email, string role);
+        Task CreateRole(string role);
     }
 }

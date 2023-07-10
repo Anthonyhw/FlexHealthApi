@@ -16,14 +16,16 @@ namespace FlexHealthInfrastructure.Services
         private readonly IAccountRepository _accountRepository;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly IMapper _mapper;
 
-        public AccountService(IAccountRepository accountRepository, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper)
+        public AccountService(IAccountRepository accountRepository, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, RoleManager<Role> roleManager)
         {
             _accountRepository = accountRepository;
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
         public async Task<SignInResult> CheckUserPasswordAsync(UserDto userUpdateDto, string password)
@@ -58,8 +60,11 @@ namespace FlexHealthInfrastructure.Services
                     else if (userDto.Tipo == "Medico")
                     {
                         await _userManager.AddToRoleAsync(user, "Medico");
+                        await _userManager.AddClaimAsync(user, new Claim("Estabelecimento", userDto.EstabelecimentoId));
                         await _userManager.AddClaimAsync(user, new Claim("CRM", userDto.Crm));
-                    }else
+                        await _userManager.AddClaimAsync(user, new Claim("Especialidade", userDto.Especialidade));
+                    }
+                    else
                     {
                         await _userManager.AddToRoleAsync(user, "Paciente");
                     }
@@ -177,6 +182,17 @@ namespace FlexHealthInfrastructure.Services
         {
             var user = _accountRepository.GetUserAsync(email).Result;
             var result = await _userManager.AddToRoleAsync(user, role);
+
+            if (result.Succeeded)
+            {
+                return;
+            }
+            return;
+        }
+
+        public async Task CreateRole(string role)
+        {
+            var result = _roleManager.CreateAsync(new Role() { Name = role }).Result;
 
             if (result.Succeeded)
             {

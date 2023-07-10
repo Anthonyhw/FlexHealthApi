@@ -127,5 +127,13 @@ namespace FlexHealthApi.Controllers
             if (result == null) return NoContent();
             return Ok() ;
         }
+
+        [HttpPost("Role/Create")]
+        public async Task<IActionResult> CreateRole([FromBody] string role)
+        {
+            var result = _accountService.CreateRole(role);
+            if (result == null) return NoContent();
+            return Ok();
+        }
     }
 }
