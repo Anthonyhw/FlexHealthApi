@@ -4,6 +4,7 @@ using FlexHealthInfrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHealthInfrastructure.Migrations
 {
     [DbContext(typeof(FlexHealthContext))]
-    partial class FlexHealthContextModelSnapshot : ModelSnapshot
+    [Migration("20230711022402_arrumandoNomeDaTabela")]
+    partial class arrumandoNomeDaTabela
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,10 +179,6 @@ namespace FlexHealthInfrastructure.Migrations
                     b.Property<DateTime>("DataMarcacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Especialidade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("MedicoId")
                         .HasColumnType("int");
 
@@ -191,12 +190,8 @@ namespace FlexHealthInfrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsuarioId")
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Valor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -350,7 +345,8 @@ namespace FlexHealthInfrastructure.Migrations
                     b.HasOne("FlexHealthDomain.Identity.User", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Medico");
 

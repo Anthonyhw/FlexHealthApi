@@ -16,8 +16,7 @@ namespace FlexHealthInfrastructure.Context
         {
 
         }
-        public DbSet<Consulta> tfh_consultas { get; set; }
-        public DbSet<Exame> tfh_exames { get; set; }
+        public DbSet<Agendamento> tfh_agendamentos { get; set; }
         public DbSet<Resultado> tfh_resultados { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,30 +38,18 @@ namespace FlexHealthInfrastructure.Context
                         .IsRequired();
             });
 
-            modelBuilder.Entity<Consulta>(c =>
+            modelBuilder.Entity<Agendamento>(c =>
             {
                 c.HasOne(u => u.Usuario)
                         .WithMany()
                         .HasForeignKey(u => u.UsuarioId)
+                        .IsRequired(false)
                         .OnDelete(DeleteBehavior.Restrict);
                 c.HasOne(u => u.Medico)
                         .WithMany()
                         .HasForeignKey(u => u.MedicoId)
                         .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            modelBuilder.Entity<Exame>(e =>
-            {
-                e.HasOne(e => e.Usuario)
-                .WithMany()
-                .HasForeignKey(e => e.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-                e.HasOne(e => e.Medico)
-                .WithMany()
-                .HasForeignKey(e => e.MedicoId)
-                .OnDelete(DeleteBehavior.Restrict);
-            });                
+            });         
         }
     }
 }

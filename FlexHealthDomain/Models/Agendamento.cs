@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FlexHealthDomain.Models
 {
-    public class Consulta
+    public class Agendamento
     {
         [Key]
         [Required]
@@ -22,7 +22,7 @@ namespace FlexHealthDomain.Models
         [Required]
         public string Status { get; set; }
 
-        public int UsuarioId { get; set; }
+        public int? UsuarioId { get; set; }
 
         public User Usuario { get; set; }
 
@@ -31,5 +31,12 @@ namespace FlexHealthDomain.Models
 
         [Required]
         public User Medico { get; set; }
+
+        [Required]
+        public string Tipo { get; set; }
+        [Required]
+        public string Valor { get; set; }
+        [Required]
+        public string Especialidade { get; set; }
     }
 }
