@@ -7,6 +7,7 @@ namespace FlexHealthDomain.Services
     public interface IAccountService
     {
         Task<UserDto> GetUser(string username);
+        Task<UserDto> GetUserById(int id);
         Task<SignInResult> CheckUserPasswordAsync(UserDto userUpdateDto, string password);
         Task<UserDto> CreateAccount(RegisterUserDto userDto);
         Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto);
