@@ -37,6 +37,22 @@ namespace FlexHealthApi.Controllers
             }
         }
 
+        [HttpGet("GetUserById/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            try
+            {
+                var user = _accountService.GetUserById(id);
+                if (user == null) return NoContent();
+                return Ok(user.Result);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar usuário: {ex.Message}");
+            }
+        }
+
         [HttpPost("Register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto userDto)
