@@ -12,6 +12,7 @@ namespace FlexHealthDomain.DTOs
     {
         public string Tipo { get; set; }
         public string Status { get; set; }
+        public int EstabelecimentoId { get; set; }
         public int MedicoId { get; set; }
         public string Especialidade { get; set; }
         public DataDto[] Datas { get; set; }

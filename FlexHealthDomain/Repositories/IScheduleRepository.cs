@@ -1,4 +1,5 @@
 ﻿using FlexHealthDomain.DTOs;
+using FlexHealthDomain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace FlexHealthDomain.Repositories
 {
     public interface IScheduleRepository: IGeneralRepository
     {
+        Agendamento GetSchedule(HorarioDto horario);
     }
 }

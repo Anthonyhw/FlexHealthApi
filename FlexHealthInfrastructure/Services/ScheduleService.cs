@@ -24,15 +24,19 @@ namespace FlexHealthInfrastructure.Services
                 {
                     foreach (var horario in data.Horarios)
                     {
-                        _scheduleRepository.Add(new Agendamento()
+                        if (_scheduleRepository.GetSchedule(horario) == null)
                         {
-                            DataConsulta = horario.Hora.AddHours(-3),
-                            MedicoId = datas.MedicoId,
-                            Status = "Aberto",
-                            Tipo = datas.Tipo,
-                            Especialidade = datas.Especialidade,
-                            Valor = "R$ " + float.Parse(horario.Valor).ToString(),
-                        });
+                            _scheduleRepository.Add(new Agendamento()
+                            {
+                                DataConsulta = horario.Hora.AddHours(-3),
+                                MedicoId = datas.MedicoId,
+                                EstabelecimentoId = datas.EstabelecimentoId,
+                                Status = "Aberto",
+                                Tipo = datas.Tipo,
+                                Especialidade = datas.Especialidade,
+                                Valor = "R$ " + float.Parse(horario.Valor).ToString(),
+                            });
+                        }
                     }
                 }
 
