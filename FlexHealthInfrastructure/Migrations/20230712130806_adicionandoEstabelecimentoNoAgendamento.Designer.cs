@@ -4,6 +4,7 @@ using FlexHealthInfrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHealthInfrastructure.Migrations
 {
     [DbContext(typeof(FlexHealthContext))]
-    partial class FlexHealthContextModelSnapshot : ModelSnapshot
+    [Migration("20230712130806_adicionandoEstabelecimentoNoAgendamento")]
+    partial class adicionandoEstabelecimentoNoAgendamento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

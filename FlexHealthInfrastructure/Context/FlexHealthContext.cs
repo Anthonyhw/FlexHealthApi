@@ -40,6 +40,11 @@ namespace FlexHealthInfrastructure.Context
 
             modelBuilder.Entity<Agendamento>(c =>
             {
+                c.HasOne(u => u.Estabelecimento)
+                        .WithMany()
+                        .HasForeignKey(u => u.EstabelecimentoId)
+                        .OnDelete(DeleteBehavior.Restrict);
+
                 c.HasOne(u => u.Usuario)
                         .WithMany()
                         .HasForeignKey(u => u.UsuarioId)

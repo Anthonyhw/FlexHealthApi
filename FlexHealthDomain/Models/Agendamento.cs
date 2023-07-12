@@ -17,7 +17,7 @@ namespace FlexHealthDomain.Models
         [Required]
         public DateTime DataConsulta { get; set; }
 
-        public DateTime DataMarcacao { get; set; }
+        public DateTime? DataMarcacao { get; set; }
 
         [Required]
         public string Status { get; set; }
@@ -25,6 +25,12 @@ namespace FlexHealthDomain.Models
         public int? UsuarioId { get; set; }
 
         public User Usuario { get; set; }
+        
+        [Required]
+        public int EstabelecimentoId { get; set; }
+
+        [Required]
+        public User Estabelecimento { get; set; }
 
         [Required]
         public int MedicoId { get; set; }
