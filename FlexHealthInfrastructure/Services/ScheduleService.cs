@@ -1,4 +1,5 @@
-﻿using FlexHealthDomain.DTOs;
+﻿using AutoMapper;
+using FlexHealthDomain.DTOs;
 using FlexHealthDomain.Models;
 using FlexHealthDomain.Repositories;
 using FlexHealthDomain.Services;
@@ -13,10 +14,13 @@ namespace FlexHealthInfrastructure.Services
     public class ScheduleService : IScheduleService
     {
         private readonly IScheduleRepository _scheduleRepository;
-        public ScheduleService(IScheduleRepository scheduleRepository) { 
+        private readonly IMapper _mapper;
+        public ScheduleService(IScheduleRepository scheduleRepository, IMapper mapper)
+        {
             _scheduleRepository = scheduleRepository;
+            _mapper = mapper;
         }
-        public async Task<Agendamento> CreateSchedule(AgendamentoDto datas)
+        public async Task<AgendamentoDto> CreateSchedule(AgendamentoDto datas)
         {
             try
             {
@@ -24,7 +28,7 @@ namespace FlexHealthInfrastructure.Services
                 {
                     foreach (var horario in data.Horarios)
                     {
-                        if (_scheduleRepository.GetSchedule(horario) == null)
+                        if (await _scheduleRepository.GetScheduleAsync(horario) == null)
                         {
                             _scheduleRepository.Add(new Agendamento()
                             {
@@ -46,6 +50,77 @@ namespace FlexHealthInfrastructure.Services
                 }
                 return null;
             } catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AgendaDto> GetScheduleByIdAsync(int id)
+        {
+            try
+            {
+                var schedule = await _scheduleRepository.GetScheduleByIdAsync(id);
+                if (schedule != null)
+                {
+                    var result = _mapper.Map<AgendaDto>(schedule);
+                    return result;
+                }
+                return null;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<AgendaDto>> GetScheduleByPatientIdAsync(int id)
+        {
+            try
+            {
+                var schedule = await _scheduleRepository.GetScheduleByPatientIdAsync(id);
+                if (schedule != null)
+                {
+                    var result = _mapper.Map<List<AgendaDto>>(schedule);
+                    return result;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<AgendaDto>> GetScheduleByDoctorIdAsync(int id)
+        {
+            try
+            {
+                var schedule = await _scheduleRepository.GetScheduleByDoctorIdAsync(id);
+                if (schedule != null)
+                {
+                    var result = _mapper.Map<List<AgendaDto>>(schedule);
+                    return result;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<AgendaDto>> GetScheduleByStablishmentIdAsync(int id)
+        {
+            try
+            {
+                var schedule = await _scheduleRepository.GetScheduleByStablishmentIdAsync(id);
+                if (schedule != null)
+                {
+                    var result = _mapper.Map<List<AgendaDto>>(schedule);
+                    return result;
+                }
+                return null;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

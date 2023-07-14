@@ -10,6 +10,10 @@ namespace FlexHealthDomain.Repositories
 {
     public interface IScheduleRepository: IGeneralRepository
     {
-        Agendamento GetSchedule(HorarioDto horario);
+        Task<Agendamento> GetScheduleAsync(HorarioDto horario);
+        Task<Agendamento> GetScheduleByIdAsync(int id);
+        Task<List<Agendamento>> GetScheduleByPatientIdAsync(int id);
+        Task<List<Agendamento>> GetScheduleByStablishmentIdAsync(int id);
+        Task<List<Agendamento>> GetScheduleByDoctorIdAsync(int id);
     }
 }

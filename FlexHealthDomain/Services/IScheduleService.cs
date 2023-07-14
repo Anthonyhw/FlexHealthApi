@@ -10,6 +10,10 @@ namespace FlexHealthDomain.Services
 {
     public interface IScheduleService
     {
-        Task<Agendamento> CreateSchedule(AgendamentoDto datas);
+        Task<AgendamentoDto> CreateSchedule(AgendamentoDto datas);
+        Task<AgendaDto> GetScheduleByIdAsync(int id);
+        Task<List<AgendaDto>> GetScheduleByPatientIdAsync(int id);
+        Task<List<AgendaDto>> GetScheduleByStablishmentIdAsync(int id);
+        Task<List<AgendaDto>> GetScheduleByDoctorIdAsync(int id);
     }
 }
