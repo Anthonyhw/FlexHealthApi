@@ -156,5 +156,23 @@ namespace FlexHealthInfrastructure.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<AgendamentoDto> ScheduleToUser(AgendamentoParaUsuarioDto agendamento)
+        {
+            try
+            {
+                var scheduleToUser = await _scheduleRepository.ScheduleToUser(agendamento);
+                if (scheduleToUser != null)
+                {
+                    var map = _mapper.Map<AgendamentoDto>(scheduleToUser);
+                    return map;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

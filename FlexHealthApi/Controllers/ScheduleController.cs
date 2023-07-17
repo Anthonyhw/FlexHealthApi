@@ -1,4 +1,5 @@
-﻿using FlexHealthDomain.DTOs;
+﻿using FlexHealthApi.Extensions;
+using FlexHealthDomain.DTOs;
 using FlexHealthDomain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace FlexHealthApi.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class ScheduleController: ControllerBase
+    public class ScheduleController : ControllerBase
     {
         private readonly IScheduleService _scheduleService;
 
@@ -20,11 +21,13 @@ namespace FlexHealthApi.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateSchedule(AgendamentoDto datas)
         {
-            try {
-                 var result = await _scheduleService.CreateSchedule(datas);
-                 return Ok(result);
+            try
+            {
+                var result = await _scheduleService.CreateSchedule(datas);
+                return Ok(result);
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar criar agenda: {ex.Message}");
             }
@@ -35,10 +38,11 @@ namespace FlexHealthApi.Controllers
         {
             try
             {
-                var result = await _scheduleService.GetScheduleByIdAsync(id); 
+                var result = await _scheduleService.GetScheduleByIdAsync(id);
                 if (result != null) return Ok(result);
                 return NotFound();
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return this.StatusCode(500, $"Erro ao tentar recuperar agenda: {ex.Message}");
             }
@@ -60,7 +64,7 @@ namespace FlexHealthApi.Controllers
         }
 
         [HttpGet("Doctor")]
-        [Authorize(Roles="Medico,Estabelecimento")]
+        [Authorize(Roles = "Medico,Estabelecimento")]
         public async Task<IActionResult> GetScheduleByDoctorId([FromQuery] int id)
         {
             try
@@ -104,6 +108,24 @@ namespace FlexHealthApi.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(500, $"Erro ao tentar recuperar agenda: {ex.Message}");
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> ScheduleToUser([FromBody] AgendamentoParaUsuarioDto agendamento)
+        {
+            try
+            {
+                agendamento.UsuarioId = User.Id();
+                var result = await _scheduleService.ScheduleToUser(agendamento);
+                if (result != null) return Ok(result);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(500, $"Erro ao tentar Confirmar Agendamento: {ex.Message}");
+
             }
         }
     }

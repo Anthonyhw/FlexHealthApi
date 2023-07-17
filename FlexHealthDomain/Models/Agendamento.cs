@@ -44,5 +44,6 @@ namespace FlexHealthDomain.Models
         public string Valor { get; set; }
         [Required]
         public string Especialidade { get; set; }
+        public string? Pagamento { get; set; }
     }
 }
