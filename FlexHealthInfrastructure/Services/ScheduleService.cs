@@ -14,10 +14,12 @@ namespace FlexHealthInfrastructure.Services
     public class ScheduleService : IScheduleService
     {
         private readonly IScheduleRepository _scheduleRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly IMapper _mapper;
-        public ScheduleService(IScheduleRepository scheduleRepository, IMapper mapper)
+        public ScheduleService(IScheduleRepository scheduleRepository, IMapper mapper, IAccountRepository accountRepository)
         {
             _scheduleRepository = scheduleRepository;
+            _accountRepository = accountRepository;
             _mapper = mapper;
         }
         public async Task<AgendamentoDto> CreateSchedule(AgendamentoDto datas)
@@ -116,6 +118,35 @@ namespace FlexHealthInfrastructure.Services
                 if (schedule != null)
                 {
                     var result = _mapper.Map<List<AgendaDto>>(schedule);
+                    return result;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<List<AgendaPorEstabelecimentoDto>> GetScheduleByCityAsync(string city)
+        {
+            try
+            {
+                var schedule = await _scheduleRepository.GetScheduleByCityAsync(city);
+                if (schedule != null)
+                {
+                    var mappedSchedule = _mapper.Map<List<AgendaDto>>(schedule);
+                    var result = new List<AgendaPorEstabelecimentoDto>();
+
+                    foreach ( var item in mappedSchedule)
+                    {
+                        if (result.Find(s => s.Estabelecimento.Id == item.EstabelecimentoId) == null)
+                        {
+                            var estabelecimento = await _accountRepository.GetUserByIdAsync(item.EstabelecimentoId);
+                            result.Add(new AgendaPorEstabelecimentoDto() { Estabelecimento = estabelecimento, Agenda = new List<AgendaDto>()});
+                        }
+                        result.Find(s => s.Estabelecimento.Id == item.EstabelecimentoId).Agenda.Add(item);
+                    }
+
                     return result;
                 }
                 return null;

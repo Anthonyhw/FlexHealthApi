@@ -30,8 +30,8 @@ namespace FlexHealthApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetScheduleById(int id)
+        [HttpGet]
+        public async Task<IActionResult> GetScheduleById([FromQuery] int id)
         {
             try
             {
@@ -40,12 +40,12 @@ namespace FlexHealthApi.Controllers
                 return NotFound();
             }catch (Exception ex)
             {
-                return this.StatusCode(500, $"Erro ao tentar criar agenda: {ex.Message}");
+                return this.StatusCode(500, $"Erro ao tentar recuperar agenda: {ex.Message}");
             }
         }
 
-        [HttpGet("Patient/{id}")]
-        public async Task<IActionResult> GetScheduleByPatientId(int id)
+        [HttpGet("Patient")]
+        public async Task<IActionResult> GetScheduleByPatientId([FromQuery] int id)
         {
             try
             {
@@ -55,13 +55,13 @@ namespace FlexHealthApi.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(500, $"Erro ao tentar criar agenda: {ex.Message}");
+                return this.StatusCode(500, $"Erro ao tentar recuperar agenda: {ex.Message}");
             }
         }
 
-        [HttpGet("Doctor/{id}")]
+        [HttpGet("Doctor")]
         [Authorize(Roles="Medico,Estabelecimento")]
-        public async Task<IActionResult> GetScheduleByDoctorId(int id)
+        public async Task<IActionResult> GetScheduleByDoctorId([FromQuery] int id)
         {
             try
             {
@@ -71,13 +71,13 @@ namespace FlexHealthApi.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(500, $"Erro ao tentar criar agenda: {ex.Message}");
+                return this.StatusCode(500, $"Erro ao tentar recuperar agenda: {ex.Message}");
             }
         }
 
-        [HttpGet("Stablishment/{id}")]
+        [HttpGet("Stablishment")]
         [Authorize(Roles = "Estabelecimento")]
-        public async Task<IActionResult> GetScheduleByStablishmentId(int id)
+        public async Task<IActionResult> GetScheduleByStablishmentId([FromQuery] int id)
         {
             try
             {
@@ -87,7 +87,23 @@ namespace FlexHealthApi.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(500, $"Erro ao tentar criar agenda: {ex.Message}");
+                return this.StatusCode(500, $"Erro ao tentar recuperar agenda: {ex.Message}");
+            }
+        }
+
+        [HttpGet("City")]
+        [Authorize]
+        public async Task<IActionResult> GetScheduleByStablishmentId([FromQuery] string city)
+        {
+            try
+            {
+                var result = await _scheduleService.GetScheduleByCityAsync(city);
+                if (result != null) return Ok(result);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(500, $"Erro ao tentar recuperar agenda: {ex.Message}");
             }
         }
     }
