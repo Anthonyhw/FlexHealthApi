@@ -63,5 +63,20 @@ namespace FlexHealthInfrastructure.Repositories
             await _context.SaveChangesAsync();
             return response;
         }
+
+        public async Task<Agendamento> CancelSchedule(int id)
+        {
+            var response = await _context.tfh_agendamentos.Where(sch => sch.Id == id).FirstOrDefaultAsync();
+            response.Status = "Cancelado";
+            _context.SaveChanges();
+            return response;
+        }
+
+        public async Task<bool> DeleteSchedule(int id)
+        {
+            _context.tfh_agendamentos.Where(sch => sch.Id == id).ExecuteDelete();
+            var response = await _context.SaveChangesAsync();
+            return response > -1;
+        }
     }
 }

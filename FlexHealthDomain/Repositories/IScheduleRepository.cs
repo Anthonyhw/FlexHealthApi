@@ -17,5 +17,7 @@ namespace FlexHealthDomain.Repositories
         Task<List<Agendamento>> GetScheduleByDoctorIdAsync(int id);
         Task<List<Agendamento>> GetScheduleByCityAsync(string city);
         Task<Agendamento> ScheduleToUser(AgendamentoParaUsuarioDto agendamento);
+        Task<Agendamento> CancelSchedule(int id);
+        Task<bool> DeleteSchedule(int id);
     }
 }

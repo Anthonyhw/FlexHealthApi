@@ -99,6 +99,13 @@ namespace FlexHealthInfrastructure.Services
                 var schedule = await _scheduleRepository.GetScheduleByDoctorIdAsync(id);
                 if (schedule != null)
                 {
+                    foreach (var sch in schedule)
+                    {
+                        if (sch.UsuarioId != null)
+                        {
+                            sch.Usuario = await _accountRepository.GetUserByIdAsync((int)sch.UsuarioId);
+                        } 
+                    }
                     var result = _mapper.Map<List<AgendaDto>>(schedule);
                     return result;
                 }
@@ -168,6 +175,37 @@ namespace FlexHealthInfrastructure.Services
                     return map;
                 }
                 return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AgendaDto> CancelSchedule(int id)
+        {
+            try
+            {
+                var updateResult = await _scheduleRepository.CancelSchedule(id);
+                if (updateResult != null)
+                {
+                    var response = _mapper.Map<AgendaDto>(updateResult);
+                    return response;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public Task<bool> DeleteSchedule(int id)
+        {
+            try
+            {
+                var deleteResult = _scheduleRepository.DeleteSchedule(id);
+                return deleteResult;
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using FlexHealthApi.Extensions;
 using FlexHealthDomain.DTOs;
+using FlexHealthDomain.Models;
 using FlexHealthDomain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -111,7 +112,7 @@ namespace FlexHealthApi.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("user")]
         [Authorize]
         public async Task<IActionResult> ScheduleToUser([FromBody] AgendamentoParaUsuarioDto agendamento)
         {
@@ -125,6 +126,40 @@ namespace FlexHealthApi.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(500, $"Erro ao tentar Confirmar Agendamento: {ex.Message}");
+
+            }
+        }
+
+        [HttpPut("cancel")]
+        [Authorize(Roles = "Medico")]
+        public async Task<IActionResult> CancelSchedule([FromBody] int id)
+        {
+            try
+            {
+                var result = await _scheduleService.CancelSchedule(id);
+                if (result != null) return Ok(result);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(500, $"Erro ao tentar Confirmar Agendamento: {ex.Message}");
+
+            }
+        }
+
+        [HttpDelete]
+        [Authorize(Roles ="Medico")]
+        public async Task<IActionResult> DeleteSchedule([FromQuery] int id)
+        {
+            try
+            {
+                var result = await _scheduleService.DeleteSchedule(id);
+                if (result != null) return Ok(result);
+                return StatusCode(500, "Não foi possível deletar o Agendamento!");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(500, $"Erro ao tentar Deletar Agendamento: {ex.Message}");
 
             }
         }
