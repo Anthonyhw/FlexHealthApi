@@ -21,5 +21,6 @@ namespace FlexHealthDomain.DTOs
         public UserDto Usuario { get; set; }
         public string Especialidade { get; set; }   
         public string Valor { get; set; }
+        public string Pagamento { get; set; }
     }
 }
