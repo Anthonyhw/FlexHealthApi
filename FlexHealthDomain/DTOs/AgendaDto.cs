@@ -17,6 +17,7 @@ namespace FlexHealthDomain.DTOs
         public string DataMarcacao { get; set; }
         public int EstabelecimentoId { get; set; }
         public int MedicoId { get; set; }
+        public UserDto Medico { get; set; }
         public int UsarioId{ get; set; }
         public UserDto Usuario { get; set; }
         public string Especialidade { get; set; }   

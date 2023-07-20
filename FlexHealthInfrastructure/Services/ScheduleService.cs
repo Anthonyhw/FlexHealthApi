@@ -99,13 +99,6 @@ namespace FlexHealthInfrastructure.Services
                 var schedule = await _scheduleRepository.GetScheduleByDoctorIdAsync(id);
                 if (schedule != null)
                 {
-                    foreach (var sch in schedule)
-                    {
-                        if (sch.UsuarioId != null)
-                        {
-                            sch.Usuario = await _accountRepository.GetUserByIdAsync((int)sch.UsuarioId);
-                        } 
-                    }
                     var result = _mapper.Map<List<AgendaDto>>(schedule);
                     return result;
                 }

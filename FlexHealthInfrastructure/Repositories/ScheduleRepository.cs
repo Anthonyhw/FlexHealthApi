@@ -43,13 +43,13 @@ namespace FlexHealthInfrastructure.Repositories
         }
         public async Task<List<Agendamento>> GetScheduleByDoctorIdAsync(int id)
         {
-            var response = await _context.tfh_agendamentos.Where(s => s.MedicoId == id).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => s.MedicoId == id).Include(u => u.Usuario).ToListAsync();
             return response;
         }
 
         public async Task<List<Agendamento>> GetScheduleByCityAsync(string city)
         {
-            var response = await _context.tfh_agendamentos.Where(s => (s.Estabelecimento.Endereco.ToUpper().Contains($@"\{city.ToUpper()}\") && (s.Status == "Aberto") )).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => (s.Estabelecimento.Endereco.ToUpper().Contains($@"\{city.ToUpper()}\") && (s.Status == "Aberto") )).Include(m => m.Medico).ToListAsync();
             return response;
         }
 
