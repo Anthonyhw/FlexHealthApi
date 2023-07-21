@@ -34,8 +34,8 @@ namespace FlexHealthApi.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetScheduleById([FromQuery] int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetScheduleByScheduleId(int id)
         {
             try
             {
@@ -50,6 +50,7 @@ namespace FlexHealthApi.Controllers
         }
 
         [HttpGet("Patient")]
+        [Authorize]
         public async Task<IActionResult> GetScheduleByPatientId([FromQuery] int id)
         {
             try

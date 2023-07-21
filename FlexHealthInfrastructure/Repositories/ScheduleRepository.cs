@@ -33,12 +33,12 @@ namespace FlexHealthInfrastructure.Repositories
 
         public async Task<List<Agendamento>> GetScheduleByPatientIdAsync(int id)
         {
-            var response = await _context.tfh_agendamentos.Where(s => s.UsuarioId == id).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => s.UsuarioId == id).Include(m => m.Medico).Include(m => m.Usuario).ToListAsync();
             return response;
         }
         public async Task<List<Agendamento>> GetScheduleByStablishmentIdAsync(int id)
         {
-            var response = await _context.tfh_agendamentos.Where(s => s.EstabelecimentoId == id).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => s.EstabelecimentoId == id).Include(m => m.Medico).Include(m => m.Usuario).ToListAsync();
             return response;
         }
         public async Task<List<Agendamento>> GetScheduleByDoctorIdAsync(int id)
