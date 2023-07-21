@@ -176,6 +176,23 @@ namespace FlexHealthInfrastructure.Services
                 throw new Exception($"Erro ao tentar verificar usuário: {ex.Message}");
             }
         }
+        public async Task<bool> VerifyCrm(string crm)
+        {
+            try
+            {
+                var users = await _userManager.Users.ToListAsync();
+                foreach (var user in users)
+                {
+                    var exists = _userManager.GetClaimsAsync(user).Result.Any(u => u.Value.Equals(crm));
+                    if (exists) return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao tentar verificar usuário: {ex.Message}");
+            }
+        }
         public async Task<bool> VerifyEmail(string email)
         {
             try

@@ -13,6 +13,7 @@ namespace FlexHealthDomain.Services
         Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto);
         Task<bool> VerifyCpf(string cpf);
         Task<bool> VerifyRg(string rg);
+        Task<bool> VerifyCrm(string crm);
         Task<bool> VerifyEmail(string email);
         Task AddClaim(string email, string claim, string value);
         Task AddRole(string email, string role);

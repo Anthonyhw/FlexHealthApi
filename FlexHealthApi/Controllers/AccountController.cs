@@ -62,8 +62,11 @@ namespace FlexHealthApi.Controllers
                 if (await _accountService.VerifyCpf(userDto.Cpf)) return BadRequest("CPF já cadastrado no sistema!");
                 if (await _accountService.VerifyRg(userDto.Rg)) return BadRequest("RG já cadastrado no sistema!");
                 if (await _accountService.VerifyEmail(userDto.Email)) return BadRequest("E-mail já cadastrado no sistema!");
-                // Necesário fazer verificação de CNPJ também
-                
+                if (userDto.Crm !=  null)
+                {
+                    if (await _accountService.VerifyCrm(userDto.Crm)) return BadRequest("CRM já cadastrado no sistema!");
+                }
+
 
                 var user = await _accountService.CreateAccount(userDto);
                 if (user != null) return Ok(user);
