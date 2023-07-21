@@ -17,7 +17,7 @@ namespace FlexHealthInfrastructure.Context
 
         }
         public DbSet<Agendamento> tfh_agendamentos { get; set; }
-        public DbSet<Resultado> tfh_resultados { get; set; }
+        public DbSet<Resultado> tfh_prescricoes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,7 +54,24 @@ namespace FlexHealthInfrastructure.Context
                         .WithMany()
                         .HasForeignKey(u => u.MedicoId)
                         .OnDelete(DeleteBehavior.Restrict);
-            });         
+            });
+
+            modelBuilder.Entity<Resultado>(r =>
+            {
+                r.HasOne(u => u.Usuario)
+                        .WithMany()
+                        .HasForeignKey(u => u.UsuarioId)
+                        .IsRequired(false)
+                        .OnDelete(DeleteBehavior.Restrict);
+                r.HasOne(u => u.Medico)
+                        .WithMany()
+                        .HasForeignKey(u => u.MedicoId)
+                        .OnDelete(DeleteBehavior.Restrict);
+                r.HasOne(u => u.Agendamento)
+                        .WithMany()
+                        .HasForeignKey(u => u.AgendamentoId)
+                        .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

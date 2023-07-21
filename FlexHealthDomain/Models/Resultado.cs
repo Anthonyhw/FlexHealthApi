@@ -16,13 +16,28 @@ namespace FlexHealthDomain.Models
         public int Id { get; set; }
 
         [Required]
-        public string Exame { get; set; }
+        public string ExameURL { get; set; }
 
         [Required]
         public int UsuarioId { get; set; }
 
         [Required]
         public User Usuario { get; set; }
+
+        [Required]
+        public int MedicoId { get; set; }
+
+        [Required]
+        public User Medico { get; set; }
+
+        [Required]
+        public int AgendamentoId { get; set; }
+
+        [Required]
+        public Agendamento Agendamento { get; set; }
+
+        [Required]
+        public string Proposito { get; set; }
 
         [Required]
         public bool Visibilidade { get; set; }

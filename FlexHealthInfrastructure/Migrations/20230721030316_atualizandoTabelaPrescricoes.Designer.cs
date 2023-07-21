@@ -4,6 +4,7 @@ using FlexHealthInfrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHealthInfrastructure.Migrations
 {
     [DbContext(typeof(FlexHealthContext))]
-    partial class FlexHealthContextModelSnapshot : ModelSnapshot
+    [Migration("20230721030316_atualizandoTabelaPrescricoes")]
+    partial class atualizandoTabelaPrescricoes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,9 +226,6 @@ namespace FlexHealthInfrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AgendamentoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ExameURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -244,8 +244,6 @@ namespace FlexHealthInfrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AgendamentoId");
 
                     b.HasIndex("MedicoId");
 
@@ -389,12 +387,6 @@ namespace FlexHealthInfrastructure.Migrations
 
             modelBuilder.Entity("FlexHealthDomain.Models.Resultado", b =>
                 {
-                    b.HasOne("FlexHealthDomain.Models.Agendamento", "Agendamento")
-                        .WithMany()
-                        .HasForeignKey("AgendamentoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("FlexHealthDomain.Identity.User", "Medico")
                         .WithMany()
                         .HasForeignKey("MedicoId")
@@ -405,8 +397,6 @@ namespace FlexHealthInfrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Agendamento");
 
                     b.Navigation("Medico");
 
