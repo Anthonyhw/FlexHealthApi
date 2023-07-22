@@ -21,7 +21,7 @@ namespace FlexHealthInfrastructure.Repositories
 
         public async Task<Agendamento> GetScheduleAsync(HorarioDto horario)
         {
-            var response = _context.tfh_agendamentos.FirstOrDefault(a => a.DataConsulta.Date.Equals(horario.Hora.Date) && a.DataConsulta.Hour.Equals(horario.Hora.AddHours(-3).Hour) && a.DataConsulta.Minute.Equals(horario.Hora.AddHours(-3).Minute));
+            var response = await _context.tfh_agendamentos.FirstOrDefaultAsync(a => a.DataConsulta.Date.Equals(horario.Hora.Date) && a.DataConsulta.Hour.Equals(horario.Hora.AddHours(-3).Hour) && a.DataConsulta.Minute.Equals(horario.Hora.AddHours(-3).Minute));
             return response;
         }
 
@@ -33,17 +33,17 @@ namespace FlexHealthInfrastructure.Repositories
 
         public async Task<List<Agendamento>> GetScheduleByPatientIdAsync(int id)
         {
-            var response = await _context.tfh_agendamentos.Where(s => s.UsuarioId == id).Include(m => m.Medico).Include(m => m.Usuario).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => s.UsuarioId == id).Include(m => m.Medico).Include(m => m.Usuario).Include(e => e.Estabelecimento).ToListAsync();
             return response;
         }
         public async Task<List<Agendamento>> GetScheduleByStablishmentIdAsync(int id)
         {
-            var response = await _context.tfh_agendamentos.Where(s => s.EstabelecimentoId == id).Include(m => m.Medico).Include(m => m.Usuario).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => s.EstabelecimentoId == id).Include(m => m.Medico).Include(m => m.Usuario).Include(e => e.Estabelecimento).ToListAsync();
             return response;
         }
         public async Task<List<Agendamento>> GetScheduleByDoctorIdAsync(int id)
         {
-            var response = await _context.tfh_agendamentos.Where(s => s.MedicoId == id).Include(u => u.Usuario).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => s.MedicoId == id).Include(u => u.Usuario).Include(e => e.Estabelecimento).ToListAsync();
             return response;
         }
 
