@@ -14,5 +14,6 @@ namespace FlexHealthDomain.Repositories
         void DeleteRange<T>(T[] entity) where T : class;
 
         Task<bool> SaveChangesAsync();
+        bool SaveChanges();
     }
 }

@@ -29,4 +29,9 @@
     <ProjectReference Include="..\FlexHealthInfrastructure\FlexHealthInfrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Images\" />
+    <Folder Include="Resources\Prescriptions\" />
+  </ItemGroup>
+
 </Project>

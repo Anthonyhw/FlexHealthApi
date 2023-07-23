@@ -4,23 +4,29 @@ using FlexHealthDomain.Models;
 using FlexHealthDomain.Repositories;
 using FlexHealthDomain.Services;
 using System;
+using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace FlexHealthInfrastructure.Services
 {
     public class ScheduleService : IScheduleService
     {
         private readonly IScheduleRepository _scheduleRepository;
+        private readonly IPrescriptionRepository _prescriptionRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IMapper _mapper;
-        public ScheduleService(IScheduleRepository scheduleRepository, IMapper mapper, IAccountRepository accountRepository)
+        private readonly IHostingEnvironment _environment;
+        public ScheduleService(IScheduleRepository scheduleRepository, IMapper mapper, IAccountRepository accountRepository, IPrescriptionRepository prescriptionRepository, IHostingEnvironment environment)
         {
             _scheduleRepository = scheduleRepository;
             _accountRepository = accountRepository;
             _mapper = mapper;
+            _prescriptionRepository = prescriptionRepository;
+            _environment = environment;
         }
         public async Task<AgendamentoDto> CreateSchedule(AgendamentoDto datas)
         {
@@ -52,6 +58,54 @@ namespace FlexHealthInfrastructure.Services
                 }
                 return null;
             } catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public bool EndSchedule(EncerrarAgendamentoDto request)
+        {
+            bool verifyAdds = true; 
+            try
+            {
+                var schedule = _scheduleRepository.EndSchedule(int.Parse(request.AgendamentoId));
+                if (schedule != null)
+                {
+                    try
+                    {
+                        if (request.Arquivos != null)
+                        {
+                            foreach (var arquivo in request.Arquivos)
+                            {
+                                _prescriptionRepository.Add(new Prescricao()
+                                {
+                                    URL = arquivo.URL,
+                                    UsuarioId = arquivo.UsuarioId,
+                                    MedicoId = arquivo.MedicoId,
+                                    Proposito = arquivo.Proposito,
+                                    AgendamentoId = arquivo.AgendamentoId,
+                                    Visibilidade = false
+                                });
+                                string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\Prescriptions\" + arquivo.URL + Path.GetExtension(arquivo.Arquivo.FileName));
+                                using (var fileStream = new FileStream(uploadFolder, FileMode.Create)) { 
+                                    arquivo.Arquivo.CopyTo(fileStream);
+                                }
+                                
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        verifyAdds = false;
+                        throw new Exception(ex.Message);
+                    }
+                    if (verifyAdds)
+                    {
+                        return _scheduleRepository.SaveChanges();
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -164,6 +218,7 @@ namespace FlexHealthInfrastructure.Services
                 var scheduleToUser = await _scheduleRepository.ScheduleToUser(agendamento);
                 if (scheduleToUser != null)
                 {
+                    await _scheduleRepository.SaveChangesAsync();
                     var map = _mapper.Map<AgendamentoDto>(scheduleToUser);
                     return map;
                 }
@@ -179,6 +234,7 @@ namespace FlexHealthInfrastructure.Services
         {
             try
             {
+                await _scheduleRepository.SaveChangesAsync();
                 var updateResult = await _scheduleRepository.CancelSchedule(id);
                 if (updateResult != null)
                 {
@@ -198,6 +254,7 @@ namespace FlexHealthInfrastructure.Services
             try
             {
                 var deleteResult = _scheduleRepository.DeleteSchedule(id);
+                if (deleteResult.Result) _scheduleRepository.SaveChangesAsync();
                 return deleteResult;
             }
             catch (Exception ex)

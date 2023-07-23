@@ -4,6 +4,7 @@ using FlexHealthDomain.Models;
 using FlexHealthDomain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace FlexHealthApi.Controllers
 {
@@ -34,7 +35,26 @@ namespace FlexHealthApi.Controllers
             }
         }
 
+        [HttpPost("end")]
+        [Consumes("multipart/form-data")]
+        [Authorize]
+        public IActionResult EndSchedule([FromForm] EncerrarAgendamentoDto request)
+        {
+            try
+            {
+                var result = _scheduleService.EndSchedule(request);
+                if (result) return Ok(result);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar fechar agenda: {result}");
+
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar fechar agenda: {ex.Message}");
+            }
+        }
+
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetScheduleByScheduleId(int id)
         {
             try

@@ -17,7 +17,7 @@ namespace FlexHealthInfrastructure.Context
 
         }
         public DbSet<Agendamento> tfh_agendamentos { get; set; }
-        public DbSet<Resultado> tfh_prescricoes { get; set; }
+        public DbSet<Prescricao> tfh_prescricoes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,7 +56,7 @@ namespace FlexHealthInfrastructure.Context
                         .OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<Resultado>(r =>
+            modelBuilder.Entity<Prescricao>(r =>
             {
                 r.HasOne(u => u.Usuario)
                         .WithMany()

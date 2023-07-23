@@ -215,7 +215,7 @@ namespace FlexHealthInfrastructure.Migrations
                     b.ToTable("tfh_agendamentos");
                 });
 
-            modelBuilder.Entity("FlexHealthDomain.Models.Resultado", b =>
+            modelBuilder.Entity("FlexHealthDomain.Models.Prescricao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -226,14 +226,17 @@ namespace FlexHealthInfrastructure.Migrations
                     b.Property<int>("AgendamentoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ExameURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("MedicoId")
                         .HasColumnType("int");
 
                     b.Property<string>("Proposito")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoExame")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("URL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -387,7 +390,7 @@ namespace FlexHealthInfrastructure.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("FlexHealthDomain.Models.Resultado", b =>
+            modelBuilder.Entity("FlexHealthDomain.Models.Prescricao", b =>
                 {
                     b.HasOne("FlexHealthDomain.Models.Agendamento", "Agendamento")
                         .WithMany()

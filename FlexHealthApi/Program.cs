@@ -7,6 +7,7 @@ using FlexHealthInfrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -30,13 +31,15 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IAccountService, AccountService>()
                 .AddScoped<ITokenService, TokenService>()
-                .AddScoped<IScheduleService, ScheduleService>();
+                .AddScoped<IScheduleService, ScheduleService>()
+                .AddScoped<IPrescriptionService, PrescriptionService>();
 #endregion
 
 #region [Repositories]
 builder.Services.AddScoped<IAccountRepository, AccountRepository>()
                 .AddScoped<IGeneralRepository, GeneralRepository>()
-                .AddScoped<IScheduleRepository, ScheduleRepository>();
+                .AddScoped<IScheduleRepository, ScheduleRepository>()
+                .AddScoped<IPrescriptionRepository, PrescriptionRepository>();
 #endregion
 
 #endregion
@@ -120,6 +123,11 @@ app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+    RequestPath = new PathString("/Resources")
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

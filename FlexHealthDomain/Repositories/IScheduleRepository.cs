@@ -19,5 +19,6 @@ namespace FlexHealthDomain.Repositories
         Task<Agendamento> ScheduleToUser(AgendamentoParaUsuarioDto agendamento);
         Task<Agendamento> CancelSchedule(int id);
         Task<bool> DeleteSchedule(int id);
+        Agendamento EndSchedule(int id);
     }
 }

@@ -52,7 +52,7 @@ namespace FlexHealthInfrastructure.Services
             var tokenDescription = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(15).AddHours(3),
+                Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = creds
             };
 
