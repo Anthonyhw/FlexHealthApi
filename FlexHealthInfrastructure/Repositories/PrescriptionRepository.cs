@@ -19,5 +19,19 @@ namespace FlexHealthInfrastructure.Repositories
             _context = context;
         }
 
+        public async Task<Prescricao> GetPrescription(int id)
+        {
+            return await _context.tfh_prescricoes.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<IEnumerable<Prescricao>> GetPrescriptionsByUserId(int id)
+        {
+            return await _context.tfh_prescricoes.Where(p => p.UsuarioId == id).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Prescricao>> GetPrescriptionsByScheduleId(int id)
+        {
+            return await _context.tfh_prescricoes.Where(p => p.AgendamentoId == id).ToListAsync();
+        }
     }
 }

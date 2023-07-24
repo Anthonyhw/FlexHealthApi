@@ -16,6 +16,7 @@ namespace FlexHealthApi.Helpers
             CreateMap<Agendamento, AgendaDto>()
                 .ForMember( a => a.Usuario, opt => opt.MapFrom(src => src.Usuario))
                 .ForMember(a => a.Medico, opt => opt.MapFrom(src => src.Medico)).ReverseMap();
+            CreateMap<Prescricao, ArquivoDto>().ReverseMap();
         }
     }
 }

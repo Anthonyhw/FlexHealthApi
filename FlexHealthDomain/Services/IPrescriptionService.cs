@@ -10,6 +10,9 @@ namespace FlexHealthDomain.Services
 {
     public interface IPrescriptionService
     {
-        Task<ArquivoDto[]> CreatePrescription(ArquivoDto[] arquivos);
+        Task<ArquivoDto> GetPrescription(int id);
+        Task<IEnumerable<ArquivoDto>> GetPrescriptionsByUserId(int id);
+        Task<IEnumerable<ArquivoDto>> GetPrescriptionsByScheduleId(int id);
+        Task<IEnumerable<ArquivoDto>> CreatePrescription(ArquivoDto[] arquivos);
     }
 }

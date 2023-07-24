@@ -10,5 +10,8 @@ namespace FlexHealthDomain.Repositories
 {
     public interface IPrescriptionRepository: IGeneralRepository
     {
+        Task<Prescricao> GetPrescription(int id);
+        Task<IEnumerable<Prescricao>> GetPrescriptionsByUserId(int id);
+        Task<IEnumerable<Prescricao>> GetPrescriptionsByScheduleId(int id);
     }
 }

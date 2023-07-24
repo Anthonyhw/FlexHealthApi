@@ -26,7 +26,59 @@ namespace FlexHealthInfrastructure.Services
             _mapper = mapper;
             _environment = environment;
         }
-        public async Task<ArquivoDto[]> CreatePrescription(ArquivoDto[] arquivos)
+
+        public async Task<ArquivoDto> GetPrescription(int id)
+        {
+            try
+            {
+                var prescription = await _PrescriptionRepository.GetPrescription(id);
+                if (prescription != null)
+                {
+                    var result = _mapper.Map<ArquivoDto>(prescription);
+                    return result;
+                }
+                return null;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<IEnumerable<ArquivoDto>> GetPrescriptionsByUserId(int id)
+        {
+            try
+            {
+                var prescription = await _PrescriptionRepository.GetPrescriptionsByUserId(id);
+                if (prescription != null)
+                {
+                    var result = _mapper.Map<IEnumerable<ArquivoDto>>(prescription);
+                    return result;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<IEnumerable<ArquivoDto>> GetPrescriptionsByScheduleId(int id)
+        {
+            try
+            {
+                var prescription = await _PrescriptionRepository.GetPrescriptionsByScheduleId(id);
+                if (prescription != null)
+                {
+                    var result = _mapper.Map<IEnumerable<ArquivoDto>>(prescription);
+                    return result;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<ArquivoDto>> CreatePrescription(ArquivoDto[] arquivos)
         {
             try
             {
