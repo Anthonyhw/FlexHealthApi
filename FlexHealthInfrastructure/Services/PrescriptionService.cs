@@ -43,11 +43,11 @@ namespace FlexHealthInfrastructure.Services
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<IEnumerable<ArquivoDto>> GetPrescriptionsByUserId(int id)
+        public async Task<IEnumerable<ArquivoDto>> GetPrescriptionsByUserId(int id, bool visibleOnly = false)
         {
             try
             {
-                var prescription = await _PrescriptionRepository.GetPrescriptionsByUserId(id);
+                var prescription = await _PrescriptionRepository.GetPrescriptionsByUserId(id, visibleOnly);
                 if (prescription != null)
                 {
                     var result = _mapper.Map<IEnumerable<ArquivoDto>>(prescription);

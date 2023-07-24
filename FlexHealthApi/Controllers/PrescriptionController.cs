@@ -39,11 +39,11 @@ namespace FlexHealthApi.Controllers
 
         [HttpGet("user/{id}")]
         [Authorize]
-        public async Task<IActionResult> GetPrescrpitionsByUserId(int id)
+        public async Task<IActionResult> GetPrescrpitionsByUserId(int id, bool visibleOnly = false)
         {
             try
             {
-                var result = await _PrescriptionService.GetPrescriptionsByUserId(id);
+                var result = await _PrescriptionService.GetPrescriptionsByUserId(id, visibleOnly);
                 if (result != null) return Ok(result);
                 return NoContent();
 
