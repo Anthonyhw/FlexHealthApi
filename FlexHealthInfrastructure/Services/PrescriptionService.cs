@@ -78,6 +78,24 @@ namespace FlexHealthInfrastructure.Services
             }
         }
 
+        public Byte[] DownloadPrescription(string fileName)
+        {
+            try
+            {
+                var filepath = Path.Combine((_environment.ContentRootPath + @"Resources\Prescriptions\" + fileName));
+                if (File.Exists(filepath))
+                {
+                    return System.IO.File.ReadAllBytes(filepath);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<ArquivoDto>> CreatePrescription(ArquivoDto[] arquivos)
         {
             try

@@ -4,6 +4,7 @@ using FlexHealthDomain.Models;
 using FlexHealthDomain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Data;
 
 namespace FlexHealthApi.Controllers
@@ -68,6 +69,23 @@ namespace FlexHealthApi.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar prescrições: {ex.Message}");
+            }
+        }
+
+        [HttpGet("download")]
+        [AllowAnonymous]
+        public IActionResult DownloadPrescription(string fileName)
+        {
+            try
+            {
+                var result = _PrescriptionService.DownloadPrescription(fileName);
+                if (result != null) return File(result, "application/pdf", fileName.Substring(0, fileName.IndexOf("_user")) + ".pdf");
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar prescriçãp: {ex.Message}");
             }
         }
 

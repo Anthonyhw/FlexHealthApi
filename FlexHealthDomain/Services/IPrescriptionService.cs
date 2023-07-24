@@ -14,5 +14,6 @@ namespace FlexHealthDomain.Services
         Task<IEnumerable<ArquivoDto>> GetPrescriptionsByUserId(int id, bool visibleOnly);
         Task<IEnumerable<ArquivoDto>> GetPrescriptionsByScheduleId(int id);
         Task<IEnumerable<ArquivoDto>> CreatePrescription(ArquivoDto[] arquivos);
+        Byte[] DownloadPrescription(string fileName);
     }
 }
