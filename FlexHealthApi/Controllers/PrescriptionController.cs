@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Data;
+using System.Net.Http.Headers;
 
 namespace FlexHealthApi.Controllers
 {
@@ -72,13 +73,16 @@ namespace FlexHealthApi.Controllers
             }
         }
 
-        [HttpGet("download")]
-        [AllowAnonymous]
-        public IActionResult DownloadPrescription(string fileName)
+        [HttpPost("download")]
+        public IActionResult DownloadPrescription([FromBody] string fileName)
         {
             try
             {
                 var result = _PrescriptionService.DownloadPrescription(fileName);
+                Response.Headers.Add("Content-Disposition", new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = fileName
+                }.ToString());
                 if (result != null) return File(result, "application/pdf", fileName.Substring(0, fileName.IndexOf("_user")) + ".pdf");
                 return NoContent();
 
@@ -90,13 +94,29 @@ namespace FlexHealthApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles="Medico")]
+        [Authorize(Roles = "Medico")]
         public async Task<ActionResult> CreatePrescription([FromForm] ArquivoDto[] arquivos)
         {
             try
             {
                 var result = await _PrescriptionService.CreatePrescription(arquivos);
                 return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar enviar prescrições: {ex.Message}");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult ChangePrescriptionVisibility(int id, [FromBody] bool visibility)
+        {
+            try
+            {
+                var result = _PrescriptionService.ChangePrescriptionVisibility(id, visibility);
+                if (result) return Ok(result);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar alterar visibilidade");
 
             }
             catch (Exception ex)

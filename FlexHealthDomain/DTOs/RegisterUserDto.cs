@@ -30,11 +30,11 @@ namespace FlexHealthDomain.DTOs
         public string Email { get; set; }
 
         public string Password { get; set; }
-        public string Cnpj { get; set; }
-        public string Crm { get; set; }
-        public string Tipo { get; set; }
-        public string Especialidade { get; set; }
-        public string EstabelecimentoId { get; set; }
+        public string? Cnpj { get; set; }
+        public string? Crm { get; set; }
+        public string? Tipo { get; set; }
+        public string? Especialidade { get; set; }
+        public string? EstabelecimentoId { get; set; }
 
     }
 }

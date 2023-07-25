@@ -13,5 +13,6 @@ namespace FlexHealthDomain.Repositories
         Task<Prescricao> GetPrescription(int id);
         Task<IEnumerable<Prescricao>> GetPrescriptionsByUserId(int id, bool visibleOnly);
         Task<IEnumerable<Prescricao>> GetPrescriptionsByScheduleId(int id);
+        bool ChangePrescriptionVisibility(int id, bool visibility);
     }
 }

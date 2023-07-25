@@ -78,8 +78,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-var connectionString = builder.Configuration.GetConnectionString("ConnectionSqlServer");
-builder.Services.AddDbContext<FlexHealthContext>(x => x.UseSqlServer(connectionString, b => b.MigrationsAssembly("FlexHealthInfrastructure")));
+//var connectionString = builder.Configuration.GetConnectionString("ConnectionSqlServer");
+//builder.Services.AddDbContext<FlexHealthContext>(x => x.UseSqlServer(connectionString, b => b.MigrationsAssembly("FlexHealthInfrastructure")));
+var connectionString = builder.Configuration.GetConnectionString("ConnectionMySql");
+builder.Services.AddDbContext<FlexHealthContext>(x => x.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddIdentityCore<User>(options =>
 {

@@ -12,6 +12,7 @@ namespace FlexHealthDomain.DTOs
 {
     public class ArquivoDto
     {
+        public int Id { get; set; }
         public IFormFile Arquivo { get; set; }
         public string URL { get; set; }
         public int UsuarioId { get; set; }

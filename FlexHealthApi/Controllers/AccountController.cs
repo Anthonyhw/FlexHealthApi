@@ -148,6 +148,7 @@ namespace FlexHealthApi.Controllers
         }
 
         [HttpPost("Role/Create")]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateRole([FromBody] string role)
         {
             var result = _accountService.CreateRole(role);

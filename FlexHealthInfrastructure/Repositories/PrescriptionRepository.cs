@@ -38,5 +38,12 @@ namespace FlexHealthInfrastructure.Repositories
         {
             return await _context.tfh_prescricoes.Where(p => p.AgendamentoId == id).ToListAsync();
         }
+
+        public bool ChangePrescriptionVisibility(int id, bool visibility)
+        {
+            var prescription = _context.tfh_prescricoes.FirstOrDefault(p => p.Id == id);
+            prescription.Visibilidade = visibility;
+            return true;
+        }
     }
 }

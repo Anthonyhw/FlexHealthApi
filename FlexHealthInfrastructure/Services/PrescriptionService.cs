@@ -129,5 +129,24 @@ namespace FlexHealthInfrastructure.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool ChangePrescriptionVisibility(int id, bool visibility)
+        {
+            try
+            {
+                var prescription = _PrescriptionRepository.ChangePrescriptionVisibility(id, visibility);
+                if (prescription != null)
+                {
+                    var response = _PrescriptionRepository.SaveChanges();
+                    if (response) return prescription;
+                    return false;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
