@@ -1,5 +1,6 @@
 ﻿using FlexHealthDomain.DTOs;
 using FlexHealthDomain.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace FlexHealthDomain.Services
@@ -18,5 +19,6 @@ namespace FlexHealthDomain.Services
         Task AddClaim(string email, string claim, string value);
         Task AddRole(string email, string role);
         Task CreateRole(string role);
+        Task<bool> UpdatePhotoAsync(IFormFile file, int id, string FileName);
     }
 }

@@ -4,8 +4,11 @@ using FlexHealthDomain.Identity;
 using FlexHealthDomain.Models;
 using FlexHealthDomain.Repositories;
 using FlexHealthDomain.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
@@ -18,14 +21,16 @@ namespace FlexHealthInfrastructure.Services
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IMapper _mapper;
+        private readonly IHostingEnvironment _environment;
 
-        public AccountService(IAccountRepository accountRepository, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, RoleManager<Role> roleManager)
+        public AccountService(IAccountRepository accountRepository, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, RoleManager<Role> roleManager, IHostingEnvironment environment)
         {
             _accountRepository = accountRepository;
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _roleManager = roleManager;
+            _environment = environment;
         }
 
         public async Task<SignInResult> CheckUserPasswordAsync(UserDto userUpdateDto, string password)
@@ -151,6 +156,28 @@ namespace FlexHealthInfrastructure.Services
             catch (Exception ex)
             {
                 throw new Exception($"Erro ao tentar atualizar usuário: {ex.Message}");
+            }
+        }
+
+        public async Task<bool> UpdatePhotoAsync(IFormFile file, int id, string FileName)
+        {
+            try
+            {
+                FileName = $"{FileName}{Path.GetExtension(file.FileName)}";
+                var response = _accountRepository.UpdatePhotoAsync(id, FileName);
+                if (response.Result)
+                {
+                    string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\Images\UserImages\" + FileName);
+                    using (var fileStream = new FileStream(uploadFolder, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                        return (await _accountRepository.SaveChangesAsync());
+                    }
+                }
+                return response.Result;
+            }catch (Exception ex)
+            {
+                throw new Exception($"Erro ao tentar atualizar imagem: {ex.Message}");
             }
         }
 

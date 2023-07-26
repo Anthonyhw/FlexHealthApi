@@ -1,5 +1,6 @@
 ﻿using FlexHealthApi.Extensions;
 using FlexHealthDomain.DTOs;
+using FlexHealthDomain.Identity;
 using FlexHealthDomain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -128,6 +129,23 @@ namespace FlexHealthApi.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Atualizar usuário: {ex.Message}");
+            }
+        }
+
+        [HttpPut("Image")]
+        [Authorize]
+        public async Task<IActionResult> UpdatePhotoAsync([FromForm] IFormFile file, string FileName)
+        {
+            try
+            {
+                var updatePhoto = await _accountService.UpdatePhotoAsync(file, User.Id(), FileName);
+                if (!updatePhoto) return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Atualizar imagem, tente novamente mais tarde.");
+                return Ok(updatePhoto);
+
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Atualizar imagem: {ex.Message}");
             }
         }
 
