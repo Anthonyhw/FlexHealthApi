@@ -19,6 +19,7 @@ namespace FlexHealthDomain.DTOs
         public int MedicoId { get; set; }
         public int AgendamentoId { get; set; }
         public string Proposito { get; set; }
+        public string TipoExame { get; set; }
         public bool Visibilidade { get; set; }
     }
 }

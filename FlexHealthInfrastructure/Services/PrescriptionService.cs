@@ -109,6 +109,7 @@ namespace FlexHealthInfrastructure.Services
                         AgendamentoId = arquivo.AgendamentoId,
                         MedicoId = arquivo.MedicoId,
                         Proposito = arquivo.Proposito,
+                        TipoExame = arquivo.TipoExame,
                         Visibilidade = false
                     });
                     string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\Prescriptions\" + arquivo.URL + Path.GetExtension(arquivo.Arquivo.FileName));

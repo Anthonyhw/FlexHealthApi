@@ -234,10 +234,10 @@ namespace FlexHealthInfrastructure.Services
         {
             try
             {
-                await _scheduleRepository.SaveChangesAsync();
                 var updateResult = await _scheduleRepository.CancelSchedule(id);
                 if (updateResult != null)
                 {
+                    await _scheduleRepository.SaveChangesAsync();
                     var response = _mapper.Map<AgendaDto>(updateResult);
                     return response;
                 }
