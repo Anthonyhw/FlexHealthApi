@@ -152,7 +152,7 @@ namespace FlexHealthApi.Controllers
         }
 
         [HttpPut("cancel")]
-        [Authorize(Roles = "Medico")]
+        [Authorize(Roles = "Medico,Paciente")]
         public async Task<IActionResult> CancelSchedule([FromBody] int id)
         {
             try

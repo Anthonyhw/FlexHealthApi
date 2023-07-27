@@ -46,7 +46,7 @@ namespace FlexHealthInfrastructure.Services
                                 Status = "Aberto",
                                 Tipo = datas.Tipo,
                                 Especialidade = datas.Especialidade,
-                                Valor = "R$ " + float.Parse(horario.Valor).ToString(),
+                                Valor = "R$ " + horario.Valor,
                             });
                         }
                     }
