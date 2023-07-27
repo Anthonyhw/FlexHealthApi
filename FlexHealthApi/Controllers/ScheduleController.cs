@@ -119,7 +119,7 @@ namespace FlexHealthApi.Controllers
 
         [HttpGet("City")]
         [Authorize]
-        public async Task<IActionResult> GetScheduleByStablishmentId([FromQuery] string city)
+        public async Task<IActionResult> GetScheduleByCityId([FromQuery] string city)
         {
             try
             {
