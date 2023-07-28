@@ -33,7 +33,7 @@ namespace FlexHealthInfrastructure.Repositories
 
         public async Task<List<Agendamento>> GetScheduleByPatientIdAsync(int id)
         {
-            var response = await _context.tfh_agendamentos.Where(s => s.UsuarioId == id).Include(m => m.Medico).Include(m => m.Usuario).Include(e => e.Estabelecimento).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => s.UsuarioId == id).Include(m => m.Medico).Include(m => m.Usuario).Include(e => e.Estabelecimento).OrderBy((a) => a.DataConsulta).ToListAsync();
             return response;
         }
         public async Task<List<Agendamento>> GetScheduleByStablishmentIdAsync(int id)
@@ -43,7 +43,7 @@ namespace FlexHealthInfrastructure.Repositories
         }
         public async Task<List<Agendamento>> GetScheduleByDoctorIdAsync(int id)
         {
-            var response = await _context.tfh_agendamentos.Where(s => s.MedicoId == id).Include(u => u.Usuario).Include(e => e.Estabelecimento).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => s.MedicoId == id).Include(u => u.Usuario).Include(e => e.Estabelecimento).OrderBy((a) => a.DataConsulta).ToListAsync();
             return response;
         }
 
