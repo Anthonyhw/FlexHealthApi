@@ -49,7 +49,7 @@ namespace FlexHealthInfrastructure.Repositories
 
         public async Task<List<Agendamento>> GetScheduleByCityAsync(string city)
         {
-            var response = await _context.tfh_agendamentos.Where(s => (s.Estabelecimento.Endereco.ToUpper().Contains($@"\{city.ToUpper()}\") && (s.Status == "Aberto") )).Include(m => m.Medico).ToListAsync();
+            var response = await _context.tfh_agendamentos.Where(s => (EF.Functions.Like(s.Estabelecimento.Endereco.ToUpper(), $@"%\{city.ToUpper()}%") && (s.Status == "Aberto") )).Include(m => m.Medico).ToListAsync();
             return response;
         }
 
