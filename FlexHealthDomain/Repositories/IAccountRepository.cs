@@ -13,6 +13,7 @@ namespace FlexHealthDomain.Repositories
     {
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUserByIdAsync(int id);
+        Task<List<User>> GetDoctors(int id);
         Task<User> GetUserAsync(string parameter);
         Task<bool> UpdatePhotoAsync(int id, string FileName);
     }

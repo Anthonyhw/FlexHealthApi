@@ -130,6 +130,35 @@ namespace FlexHealthInfrastructure.Services
             }
         }
 
+        public async Task<List<UserDto>> GetDoctors(int id)
+        {
+            try
+            {
+                var users = await _accountRepository.GetDoctors(id);
+                if (users == null) return null;
+
+                var usersDto = _mapper.Map<List<UserDto>>(users);
+
+                foreach(var user in usersDto)
+                {
+                    var claims = await _userManager.GetClaimsAsync(users.First(u => u.Id == user.Id));
+                    foreach (var u in usersDto)
+                    {
+                        u.Claims = claims.Select(c => new ClaimsDto() { Type = c.Type, Value = c.Value });
+
+                        u.Roles = await _userManager.GetRolesAsync(users.First(u => u.Id == user.Id));
+                    }
+
+                }
+
+                return usersDto;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao tentar recuperar usuário: {ex.Message}");
+            }
+        }
+
         public async Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto)
         {
             try
