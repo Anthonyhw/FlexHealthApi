@@ -36,7 +36,7 @@ namespace FlexHealthInfrastructure.Services
                 {
                     foreach (var horario in data.Horarios)
                     {
-                        if (await _scheduleRepository.GetScheduleAsync(horario) == null)
+                        if (await _scheduleRepository.GetScheduleAsync(horario, datas.MedicoId) == null)
                         {
                             _scheduleRepository.Add(new Agendamento()
                             {

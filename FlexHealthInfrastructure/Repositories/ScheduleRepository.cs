@@ -19,9 +19,9 @@ namespace FlexHealthInfrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Agendamento> GetScheduleAsync(HorarioDto horario)
+        public async Task<Agendamento> GetScheduleAsync(HorarioDto horario, int medicoId)
         {
-            var response = await _context.tfh_agendamentos.FirstOrDefaultAsync(a => a.DataConsulta.Date.Equals(horario.Hora.Date) && a.DataConsulta.Hour.Equals(horario.Hora.AddHours(-3).Hour) && a.DataConsulta.Minute.Equals(horario.Hora.AddHours(-3).Minute));
+            var response = await _context.tfh_agendamentos.FirstOrDefaultAsync(a => a.DataConsulta.Date.Equals(horario.Hora.Date) && a.DataConsulta.Hour.Equals(horario.Hora.AddHours(-3).Hour) && a.DataConsulta.Minute.Equals(horario.Hora.AddHours(-3).Minute) && a.MedicoId == medicoId);
             return response;
         }
 
