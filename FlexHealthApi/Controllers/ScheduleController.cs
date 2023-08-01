@@ -3,8 +3,13 @@ using FlexHealthDomain.DTOs;
 using FlexHealthDomain.Models;
 using FlexHealthDomain.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
 using System.Data;
+using static System.Net.Mime.MediaTypeNames;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace FlexHealthApi.Controllers
 {
@@ -14,10 +19,12 @@ namespace FlexHealthApi.Controllers
     public class ScheduleController : ControllerBase
     {
         private readonly IScheduleService _scheduleService;
+        private readonly IWebHostEnvironment _environment;
 
-        public ScheduleController(IScheduleService scheduleService)
+        public ScheduleController(IScheduleService scheduleService, IWebHostEnvironment environment)
         {
             _scheduleService = scheduleService;
+            _environment = environment;
         }
 
         [HttpPost]
@@ -181,6 +188,47 @@ namespace FlexHealthApi.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(500, $"Erro ao tentar Deletar Agendamento: {ex.Message}");
+
+            }
+        }
+
+        [HttpGet("QrCode")]
+        [AllowAnonymous]
+        public IActionResult GetQrCode(string url, int id)
+        {
+            try
+            {
+                // Criar o gerador do QR Code
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+                PngByteQRCode qrCode = new PngByteQRCode(qrCodeData);
+
+                // Gerar a imagem do QR Code
+                var qrCodeImage = qrCode.GetGraphic(20);
+
+                Bitmap qrCodeFile;
+                using (var ms = new MemoryStream(qrCodeImage))
+                {
+                    qrCodeFile = new Bitmap(ms);
+                }
+
+                // Salvar a imagem em uma pasta
+                var imagePath = Path.Combine((_environment.ContentRootPath + @"Resources\QrCode\"));
+                if (!Directory.Exists(imagePath))
+                {
+                    Directory.CreateDirectory(imagePath);
+                }
+
+                string imageName = $"schedule{id}QRCode.png";
+                string fullPath = Path.Combine(imagePath, imageName);
+                qrCodeFile.Save(fullPath, ImageFormat.Png);
+
+                // Retornar a imagem ou o caminho para ser utilizado na sua página
+                return PhysicalFile(fullPath, "image/png");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(500, $"Erro ao tentar Agendar horário: {ex.Message}");
 
             }
         }
