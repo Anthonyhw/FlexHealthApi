@@ -250,6 +250,24 @@ namespace FlexHealthInfrastructure.Services
             }
         }
 
+        public bool ApprovePayment(int id)
+        {
+
+            try
+            {
+                var approveResult = _scheduleRepository.ApprovePayment(id);
+                if (approveResult)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public Task<bool> DeleteSchedule(int id)
         {
             try

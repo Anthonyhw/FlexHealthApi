@@ -11,5 +11,6 @@ namespace FlexHealthDomain.DTOs
         public int UsuarioId { get; set; }
         public int AgendamentoId { get; set; }
         public string Pagamento { get; set; }
+        public string StatusPagamento { get; set; }
     }
 }

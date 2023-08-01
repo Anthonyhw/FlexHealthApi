@@ -60,6 +60,7 @@ namespace FlexHealthInfrastructure.Repositories
             response.DataMarcacao = DateTime.Now;
             response.Pagamento = agendamento.Pagamento;
             response.Status = "Agendado";
+            response.StatusPagamento = agendamento.StatusPagamento;
             return response;
         }
 
@@ -68,6 +69,13 @@ namespace FlexHealthInfrastructure.Repositories
             var response = await _context.tfh_agendamentos.Where(sch => sch.Id == id).FirstOrDefaultAsync();
             response.Status = "Cancelado";
             return response;
+        }
+        
+        public bool ApprovePayment(int id)
+        {
+            var schedule = _context.tfh_agendamentos.Where(sch => sch.Id == id).FirstOrDefault();
+            schedule.StatusPagamento = "Pago";
+            return _context.SaveChanges() > 0;
         }
 
         public async Task<bool> DeleteSchedule(int id)

@@ -175,6 +175,23 @@ namespace FlexHealthApi.Controllers
             }
         }
 
+        [HttpGet("approve")]
+        [AllowAnonymous]
+        public IActionResult ApprovePayment([FromQuery] int id)
+        {
+            try
+            {
+                var result = _scheduleService.ApprovePayment(id);
+                if (result != null) return Ok("Agendamento Pago com sucesso!");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(500, $"Erro ao tentar Confirmar Agendamento: {ex.Message}");
+
+            }
+        }
+
         [HttpDelete]
         [Authorize(Roles ="Medico")]
         public async Task<IActionResult> DeleteSchedule([FromQuery] int id)
@@ -194,7 +211,7 @@ namespace FlexHealthApi.Controllers
 
         [HttpGet("QrCode")]
         [AllowAnonymous]
-        public IActionResult GetQrCode(string url, int id)
+        public IActionResult GetQrCode([FromQuery] string url, [FromQuery] int id)
         {
             try
             {
@@ -223,8 +240,7 @@ namespace FlexHealthApi.Controllers
                 string fullPath = Path.Combine(imagePath, imageName);
                 qrCodeFile.Save(fullPath, ImageFormat.Png);
 
-                // Retornar a imagem ou o caminho para ser utilizado na sua página
-                return PhysicalFile(fullPath, "image/png");
+                return Ok();
             }
             catch (Exception ex)
             {

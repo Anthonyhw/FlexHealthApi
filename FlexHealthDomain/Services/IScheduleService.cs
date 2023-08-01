@@ -20,5 +20,6 @@ namespace FlexHealthDomain.Services
         Task<AgendaDto> CancelSchedule(int id);
         Task<bool> DeleteSchedule(int id);
         bool EndSchedule(EncerrarAgendamentoDto request);
+        bool ApprovePayment(int id);
     }
 }
