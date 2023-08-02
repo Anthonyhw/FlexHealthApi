@@ -182,8 +182,8 @@ namespace FlexHealthApi.Controllers
             try
             {
                 var result = _scheduleService.ApprovePayment(id);
-                if (result != null) return Ok("Agendamento Pago com sucesso!");
-                return NotFound();
+                if (result) return Ok("Agendamento Pago com sucesso!");
+                return NotFound("Agendamento já foi pago!");
             }
             catch (Exception ex)
             {
@@ -240,7 +240,8 @@ namespace FlexHealthApi.Controllers
                 string fullPath = Path.Combine(imagePath, imageName);
                 qrCodeFile.Save(fullPath, ImageFormat.Png);
 
-                return Ok();
+                return PhysicalFile(fullPath, "image/png");
+                //return Ok();
             }
             catch (Exception ex)
             {
