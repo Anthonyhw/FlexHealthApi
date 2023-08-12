@@ -15,11 +15,9 @@ namespace FlexHealthInfrastructure.Repositories
     public class PrescriptionRepository: GeneralRepository, IPrescriptionRepository
     {
         private readonly FlexHealthContext _context;
-        private readonly IHostingEnvironment _environment;
-        public PrescriptionRepository(FlexHealthContext context, IHostingEnvironment environment) : base(context)
+        public PrescriptionRepository(FlexHealthContext context) : base(context)
         {
             _context = context;
-            _environment = environment;
         }
 
         public async Task<Prescricao> GetPrescription(int id)

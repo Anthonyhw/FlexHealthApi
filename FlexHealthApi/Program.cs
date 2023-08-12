@@ -32,14 +32,16 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IAccountService, AccountService>()
                 .AddScoped<ITokenService, TokenService>()
                 .AddScoped<IScheduleService, ScheduleService>()
-                .AddScoped<IPrescriptionService, PrescriptionService>();
+                .AddScoped<IPrescriptionService, PrescriptionService>()
+                .AddScoped<INewService, NewService>();
 #endregion
 
 #region [Repositories]
 builder.Services.AddScoped<IAccountRepository, AccountRepository>()
                 .AddScoped<IGeneralRepository, GeneralRepository>()
                 .AddScoped<IScheduleRepository, ScheduleRepository>()
-                .AddScoped<IPrescriptionRepository, PrescriptionRepository>();
+                .AddScoped<IPrescriptionRepository, PrescriptionRepository>()
+                .AddScoped<INewRepository, NewRepository>();
 #endregion
 
 #endregion

@@ -3,6 +3,7 @@ using System;
 using FlexHealthInfrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHealthInfrastructure.Migrations
 {
     [DbContext(typeof(FlexHealthContext))]
-    partial class FlexHealthContextModelSnapshot : ModelSnapshot
+    [Migration("20230812151249_CriandoTabelaNoticias")]
+    partial class CriandoTabelaNoticias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

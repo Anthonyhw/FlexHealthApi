@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="Resources\Images\UserImages\" />
+    <Folder Include="Resources\NewsImages\" />
     <Folder Include="Resources\Prescriptions\" />
   </ItemGroup>
 

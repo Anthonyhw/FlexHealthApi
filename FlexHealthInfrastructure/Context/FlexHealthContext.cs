@@ -18,6 +18,7 @@ namespace FlexHealthInfrastructure.Context
         }
         public DbSet<Agendamento> tfh_agendamentos { get; set; }
         public DbSet<Prescricao> tfh_prescricoes { get; set; }
+        public DbSet<Noticia> tfh_noticias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
