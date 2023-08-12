@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace FlexHealthDomain.Services
 {
-    public interface INewService
+    public interface INewsService
     {
         Task<IEnumerable<Noticia>> GetNews();
-        Task<Noticia> GetNewById(int id);
-        bool CreateNew(NoticiaDto createNew);
+        Task<Noticia> GetNewsById(int id);
+        bool CreateNews(NoticiaDto createNew);
     }
 }

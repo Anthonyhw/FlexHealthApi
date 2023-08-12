@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace FlexHealthDomain.Repositories
 {
-    public interface INewRepository: IGeneralRepository
+    public interface INewsRepository: IGeneralRepository
     {
         Task<IEnumerable<Noticia>> GetNews();
-        Task<Noticia> GetNewById(int id);
-        bool CreateNew(Noticia createNew);
+        Task<Noticia> GetNewsById(int id);
+        bool CreateNews(Noticia createNew);
     }
 }

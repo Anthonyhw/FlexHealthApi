@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FlexHealthInfrastructure.Repositories
 {
-    public class NewRepository : GeneralRepository, INewRepository
+    public class NewRepository : GeneralRepository, INewsRepository
     {
         private readonly FlexHealthContext _context;
         public NewRepository(FlexHealthContext context) : base(context)
@@ -23,12 +23,12 @@ namespace FlexHealthInfrastructure.Repositories
             return await _context.tfh_noticias.Where(n => n.DataCriacao.Month == DateTime.Now.Month && n.DataCriacao.Year == DateTime.Now.Year).ToListAsync();
         }
 
-        public async Task<Noticia> GetNewById(int id)
+        public async Task<Noticia> GetNewsById(int id)
         {
             return await _context.tfh_noticias.FirstOrDefaultAsync(n => n.Id == id);
         }
 
-        public bool CreateNew(Noticia createNew)
+        public bool CreateNews(Noticia createNew)
         {
             var newCreation = _context.tfh_noticias.Add(createNew);
             return _context.SaveChanges() > 0;

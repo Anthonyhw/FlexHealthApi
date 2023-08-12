@@ -13,15 +13,15 @@ using System.Threading.Tasks;
 
 namespace FlexHealthInfrastructure.Services
 {
-    public class NewService : INewService
+    public class NewsService : INewsService
     {
 
-        private readonly INewRepository _newRepository;
+        private readonly INewsRepository _newsRepository;
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _environment;
-        public NewService(INewRepository newRepository, IMapper mapper, IHostingEnvironment environment)
+        public NewsService(INewsRepository newsRepository, IMapper mapper, IHostingEnvironment environment)
         {
-            _newRepository = newRepository;
+            _newsRepository = newsRepository;
             _mapper = mapper;
             _environment = environment;
         }
@@ -30,7 +30,7 @@ namespace FlexHealthInfrastructure.Services
         {
             try
             {
-                var newRequest = await _newRepository.GetNews();
+                var newRequest = await _newsRepository.GetNews();
                 if (newRequest != null)
                 {
                     return newRequest;
@@ -43,11 +43,11 @@ namespace FlexHealthInfrastructure.Services
             }
         }
 
-        public async Task<Noticia> GetNewById(int id)
+        public async Task<Noticia> GetNewsById(int id)
         {
             try
             {
-                var newRequest = await _newRepository.GetNewById(id);
+                var newRequest = await _newsRepository.GetNewsById(id);
                 if (newRequest != null)
                 {
                     return newRequest;
@@ -60,7 +60,7 @@ namespace FlexHealthInfrastructure.Services
             }
         }
 
-        public bool CreateNew(NoticiaDto createNew)
+        public bool CreateNews(NoticiaDto createNew)
         {
             try
             {
@@ -68,11 +68,11 @@ namespace FlexHealthInfrastructure.Services
                 Random rand = new Random();
                 
                 mapNew.ImagemUrl = mapNew.ImagemUrl + DateTime.Now.ToShortDateString() + "/" + rand.Next(10000, 100000);
-                mapNew.ImagemUrl = mapNew.ImagemUrl.Replace("/", "-");
-                var newResult = _newRepository.CreateNew(mapNew);
+                mapNew.ImagemUrl = mapNew.ImagemUrl.Replace("/", "-") + Path.GetExtension(createNew.Imagem.FileName);
+                var newResult = _newsRepository.CreateNews(mapNew);
                 if (newResult != null)
                 {
-                    string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\NewsImages\" + mapNew.ImagemUrl + Path.GetExtension(createNew.Imagem.FileName));
+                    string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\NewsImages\" + mapNew.ImagemUrl);
                     using (var fileStream = new FileStream(uploadFolder, FileMode.Create))
                     {
                         createNew.Imagem.CopyTo(fileStream);

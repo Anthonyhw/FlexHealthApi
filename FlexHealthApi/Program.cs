@@ -33,7 +33,7 @@ builder.Services.AddScoped<IAccountService, AccountService>()
                 .AddScoped<ITokenService, TokenService>()
                 .AddScoped<IScheduleService, ScheduleService>()
                 .AddScoped<IPrescriptionService, PrescriptionService>()
-                .AddScoped<INewService, NewService>();
+                .AddScoped<INewsService, NewsService>();
 #endregion
 
 #region [Repositories]
@@ -41,7 +41,7 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>()
                 .AddScoped<IGeneralRepository, GeneralRepository>()
                 .AddScoped<IScheduleRepository, ScheduleRepository>()
                 .AddScoped<IPrescriptionRepository, PrescriptionRepository>()
-                .AddScoped<INewRepository, NewRepository>();
+                .AddScoped<INewsRepository, NewRepository>();
 #endregion
 
 #endregion

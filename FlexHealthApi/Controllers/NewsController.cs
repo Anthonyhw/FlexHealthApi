@@ -8,13 +8,13 @@ namespace FlexHealthApi.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class NewController : ControllerBase
+    public class NewsController : ControllerBase
     {
-        private readonly INewService _newService;
+        private readonly INewsService _newsService;
 
-        public NewController(INewService newService)
+        public NewsController(INewsService newsService)
         {
-            _newService = newService;
+            _newsService = newsService;
         }
 
         [HttpGet]
@@ -23,7 +23,7 @@ namespace FlexHealthApi.Controllers
         {
             try
             {
-                var result = await _newService.GetNews();
+                var result = await _newsService.GetNews();
                 if (result != null) return Ok(result);
                 return NoContent();
 
@@ -36,11 +36,11 @@ namespace FlexHealthApi.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetNewById(int id)
+        public async Task<IActionResult> GetNewsById(int id)
         {
             try
             {
-                var result = await _newService.GetNewById(id);
+                var result = await _newsService.GetNewsById(id);
                 if (result != null) return Ok(result);
                 return NoContent();
 
@@ -53,11 +53,11 @@ namespace FlexHealthApi.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Estabelecimento")]
-        public ActionResult CreateNew([FromForm] NoticiaDto noticia)
+        public ActionResult CreateNews([FromForm] NoticiaDto noticia)
         {
             try
             {
-                var result = _newService.CreateNew(noticia);
+                var result = _newsService.CreateNews(noticia);
                 if (result) return Ok(result);
                 else return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Criar Notícia!");
 
