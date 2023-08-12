@@ -240,8 +240,8 @@ namespace FlexHealthApi.Controllers
                 string fullPath = Path.Combine(imagePath, imageName);
                 qrCodeFile.Save(fullPath, ImageFormat.Png);
 
-                return PhysicalFile(fullPath, "image/png");
-                //return Ok();
+                //return PhysicalFile(fullPath, "image/png");
+                return Ok();
             }
             catch (Exception ex)
             {
