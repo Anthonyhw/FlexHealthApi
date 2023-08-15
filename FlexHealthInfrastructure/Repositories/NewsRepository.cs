@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace FlexHealthInfrastructure.Repositories
 {
-    public class NewRepository : GeneralRepository, INewsRepository
+    public class NewsRepository : GeneralRepository, INewsRepository
     {
         private readonly FlexHealthContext _context;
-        public NewRepository(FlexHealthContext context) : base(context)
+        public NewsRepository(FlexHealthContext context) : base(context)
         {
             _context = context;
         }
 
         public async Task<IEnumerable<Noticia>> GetNews()
         {
-            return await _context.tfh_noticias.Where(n => n.DataCriacao.Month == DateTime.Now.Month && n.DataCriacao.Year == DateTime.Now.Year).ToListAsync();
+            return await _context.tfh_noticias.Where(n => n.DataCriacao > DateTime.Now.AddDays(-15) && n.DataCriacao < DateTime.Now.AddDays(15)).ToListAsync();
         }
 
         public async Task<Noticia> GetNewsById(int id)
@@ -31,6 +31,12 @@ namespace FlexHealthInfrastructure.Repositories
         public bool CreateNews(Noticia createNew)
         {
             var newCreation = _context.tfh_noticias.Add(createNew);
+            return _context.SaveChanges() > 0;
+        }
+
+        public bool RemoveNews(int id) {
+            var news = _context.tfh_noticias.Where(n => n.Id == id).FirstOrDefault();
+            _context.tfh_noticias.Remove(news);
             return _context.SaveChanges() > 0;
         }
     }

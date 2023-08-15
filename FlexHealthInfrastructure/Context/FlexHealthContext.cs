@@ -73,6 +73,14 @@ namespace FlexHealthInfrastructure.Context
                         .HasForeignKey(u => u.AgendamentoId)
                         .OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<Noticia>(n =>
+            {
+                n.HasOne(e => e.Estabelecimento)
+                .WithMany()
+                .HasForeignKey(e => e.EstabelecimentoId)
+                .IsRequired();
+            });
         }
     }
 }

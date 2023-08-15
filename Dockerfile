@@ -22,4 +22,5 @@ RUN dotnet publish "FlexHealthApi.csproj" -c Release -o /app/publish /p:UseAppHo
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY FlexHealthApi/Resources /app/Resources
 ENTRYPOINT ["dotnet", "FlexHealthApi.dll"]

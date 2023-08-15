@@ -66,7 +66,7 @@ namespace FlexHealthInfrastructure.Services
             {
                 var mapNew = _mapper.Map<Noticia>(createNew);
                 Random rand = new Random();
-                
+
                 mapNew.ImagemUrl = mapNew.ImagemUrl + DateTime.Now.ToShortDateString() + "/" + rand.Next(10000, 100000);
                 mapNew.ImagemUrl = mapNew.ImagemUrl.Replace("/", "-") + Path.GetExtension(createNew.Imagem.FileName);
                 var newResult = _newsRepository.CreateNews(mapNew);
@@ -80,6 +80,20 @@ namespace FlexHealthInfrastructure.Services
 
                     return newResult;
                 }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool RemoveNews(int id)
+        {
+            try
+            {
+                var response = _newsRepository.RemoveNews(id);
+                if (response) return true;
                 return false;
             }
             catch (Exception ex)

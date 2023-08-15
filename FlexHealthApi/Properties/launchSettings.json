@@ -33,7 +33,9 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": null,
+      "httpPort": 50505,
+      "sslPort": 50506
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",

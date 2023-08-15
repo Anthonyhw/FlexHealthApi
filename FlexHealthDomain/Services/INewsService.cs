@@ -13,5 +13,6 @@ namespace FlexHealthDomain.Services
         Task<IEnumerable<Noticia>> GetNews();
         Task<Noticia> GetNewsById(int id);
         bool CreateNews(NoticiaDto createNew);
+        bool RemoveNews(int id);
     }
 }

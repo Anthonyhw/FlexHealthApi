@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FlexHealthDomain.Identity;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,5 +16,8 @@ namespace FlexHealthDomain.DTOs
         public string ImagemUrl { get; set; }
         public IFormFile Imagem { get; set; }
         public DateTime DataCriacao { get; set; }
+
+        public int EstabelecimentoId { get; set; }
+        public User? Estabelecimento{ get; set; }
     }
 }

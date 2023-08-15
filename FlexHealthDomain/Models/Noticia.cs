@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FlexHealthDomain.Identity;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,5 +26,11 @@ namespace FlexHealthDomain.Models
 
         [Required]
         public DateTime DataCriacao { get; set; }
+
+        [Required]
+        public int EstabelecimentoId { get; set; }
+
+        [Required]
+        public User Estabelecimento { get; set; }
     }
 }

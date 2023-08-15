@@ -1,4 +1,5 @@
 ﻿using FlexHealthDomain.DTOs;
+using FlexHealthDomain.Models;
 using FlexHealthDomain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,11 +54,27 @@ namespace FlexHealthApi.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Estabelecimento")]
-        public ActionResult CreateNews([FromForm] NoticiaDto noticia)
+        public IActionResult CreateNews([FromForm] NoticiaDto noticia)
         {
             try
             {
                 var result = _newsService.CreateNews(noticia);
+                if (result) return Ok(result);
+                else return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Criar Notícia!");
+
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar enviar prescrições: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult RemoveNews(int id)
+        {
+            try
+            {
+                var result = _newsService.RemoveNews(id);
                 if (result) return Ok(result);
                 else return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Criar Notícia!");
 
