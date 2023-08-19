@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHealthInfrastructure.Migrations
 {
     [DbContext(typeof(FlexHealthContext))]
-    [Migration("20230815200026_adicionandoEstabelecimentoIdNoticia")]
-    partial class adicionandoEstabelecimentoIdNoticia
+    [Migration("20230819074333_VPSInitial")]
+    partial class VPSInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

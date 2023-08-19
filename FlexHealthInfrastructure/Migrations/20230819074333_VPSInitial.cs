@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FlexHealthInfrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class testandoRailway : Migration
+    public partial class VPSInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -223,6 +223,8 @@ namespace FlexHealthInfrastructure.Migrations
                     Especialidade = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Pagamento = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    StatusPagamento = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -246,6 +248,33 @@ namespace FlexHealthInfrastructure.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "tfh_noticias",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Titulo = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Texto = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ImagemUrl = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EstabelecimentoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tfh_noticias", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tfh_noticias_AspNetUsers_EstabelecimentoId",
+                        column: x => x.EstabelecimentoId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -343,6 +372,11 @@ namespace FlexHealthInfrastructure.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tfh_noticias_EstabelecimentoId",
+                table: "tfh_noticias",
+                column: "EstabelecimentoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tfh_prescricoes_AgendamentoId",
                 table: "tfh_prescricoes",
                 column: "AgendamentoId");
@@ -375,6 +409,9 @@ namespace FlexHealthInfrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "tfh_noticias");
 
             migrationBuilder.DropTable(
                 name: "tfh_prescricoes");

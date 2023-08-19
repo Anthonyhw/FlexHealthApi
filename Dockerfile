@@ -13,7 +13,6 @@ COPY ["FlexHealthInfrastructure/FlexHealthInfrastructure.csproj", "FlexHealthInf
 RUN dotnet restore "FlexHealthApi/FlexHealthApi.csproj"
 COPY . .
 WORKDIR "/src/FlexHealthApi"
-RUN mkdir -p / app / Resources
 RUN dotnet build "FlexHealthApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
