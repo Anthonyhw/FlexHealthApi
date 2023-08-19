@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlexHealthApi", "FlexHealth
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlexHealthDomain", "FlexHealthDomain\FlexHealthDomain.csproj", "{E4E2058A-AD23-4ED4-BA43-10BAC35A604E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexHealthInfrastructure", "FlexHealthInfrastructure\FlexHealthInfrastructure.csproj", "{0A8BB1FD-7D0C-43C8-B623-58638F1521EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlexHealthInfrastructure", "FlexHealthInfrastructure\FlexHealthInfrastructure.csproj", "{0A8BB1FD-7D0C-43C8-B623-58638F1521EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

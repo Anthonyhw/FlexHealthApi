@@ -6,10 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using QRCoder;
-using System.Data;
-using static System.Net.Mime.MediaTypeNames;
-using System.Drawing.Imaging;
-using System.Drawing;
+using SixLabors.ImageSharp;
 
 namespace FlexHealthApi.Controllers
 {
@@ -221,32 +218,29 @@ namespace FlexHealthApi.Controllers
                 PngByteQRCode qrCode = new PngByteQRCode(qrCodeData);
 
                 // Gerar a imagem do QR Code
-                var qrCodeImage = qrCode.GetGraphic(20);
+                byte[] qrCodeImage = qrCode.GetGraphic(20);
 
-                Bitmap qrCodeFile;
-                using (var ms = new MemoryStream(qrCodeImage))
+                // Carregar a imagem do QR Code com ImageSharp
+                using (var image = Image.Load<Rgba32>(qrCodeImage))
                 {
-                    qrCodeFile = new Bitmap(ms);
-                }
+                    // Salvar a imagem em uma pasta
+                    var imagePath = Path.Combine((_environment.ContentRootPath + @"Resources\QrCode\"));
+                    if (!Directory.Exists(imagePath))
+                    {
+                        Directory.CreateDirectory(imagePath);
+                    }
 
-                // Salvar a imagem em uma pasta
-                var imagePath = Path.Combine((_environment.ContentRootPath + @"Resources\QrCode\"));
-                if (!Directory.Exists(imagePath))
-                {
-                    Directory.CreateDirectory(imagePath);
+                    string imageName = $"schedule{id}QRCode.png";
+                    string fullPath = Path.Combine(imagePath, imageName);
+                    image.SaveAsJpeg(fullPath);
                 }
-
-                string imageName = $"schedule{id}QRCode.png";
-                string fullPath = Path.Combine(imagePath, imageName);
-                qrCodeFile.Save(fullPath, ImageFormat.Png);
 
                 //return PhysicalFile(fullPath, "image/png");
                 return Ok();
             }
             catch (Exception ex)
             {
-                return this.StatusCode(500, $"Erro ao tentar Agendar horário: {ex.Message}");
-
+                return StatusCode(500, $"Erro ao tentar Agendar horário: {ex.Message}");
             }
         }
     }
