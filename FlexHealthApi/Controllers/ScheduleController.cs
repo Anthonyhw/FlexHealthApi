@@ -233,10 +233,10 @@ namespace FlexHealthApi.Controllers
                     string imageName = $"schedule{id}QRCode.png";
                     string fullPath = Path.Combine(imagePath, imageName);
                     image.SaveAsJpeg(fullPath);
+                    return Ok(PhysicalFile(fullPath, "image/png"));
                 }
 
-                //return PhysicalFile(fullPath, "image/png");
-                return Ok();
+                //return Ok();
             }
             catch (Exception ex)
             {
