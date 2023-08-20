@@ -224,7 +224,7 @@ namespace FlexHealthApi.Controllers
                 using (var image = Image.Load<Rgba32>(qrCodeImage))
                 {
                     // Salvar a imagem em uma pasta
-                    var imagePath = Path.Combine((_environment.ContentRootPath + @"Resources\QrCode\"));
+                    var imagePath = Path.Combine((_environment.ContentRootPath + @"Resources/QrCode/"));
                     if (!Directory.Exists(imagePath))
                     {
                         Directory.CreateDirectory(imagePath);
