@@ -192,10 +192,12 @@ namespace FlexHealthInfrastructure.Services
         {
             try
             {
+                FileName = $"{FileName}{Path.GetExtension(file.FileName)}";
+
                 var response = _accountRepository.UpdatePhotoAsync(id, FileName);
                 if (response.Result)
                 {
-                    string uploadFolder = Path.Combine(FileName);
+                    string uploadFolder = Path.Combine(_environment.ContentRootPath, "Resources", "Images", "UserImages", FileName);
 
                     using (var fileStream = new FileStream(uploadFolder, FileMode.Create))
                     {
