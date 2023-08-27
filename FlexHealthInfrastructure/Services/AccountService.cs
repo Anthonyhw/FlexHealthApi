@@ -197,6 +197,10 @@ namespace FlexHealthInfrastructure.Services
                 if (response.Result)
                 {
                     string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\Images\UserImages\" + FileName);
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
                     using (var fileStream = new FileStream(uploadFolder, FileMode.Create))
                     {
                         file.CopyTo(fileStream);
