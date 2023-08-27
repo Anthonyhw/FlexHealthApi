@@ -86,7 +86,7 @@ namespace FlexHealthInfrastructure.Services
                                     Visibilidade = false,
                                     TipoExame = arquivo.TipoExame
                                 });
-                                string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\Prescriptions\" + arquivo.URL + Path.GetExtension(arquivo.Arquivo.FileName));
+                                string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources/Prescriptions/" + arquivo.URL + Path.GetExtension(arquivo.Arquivo.FileName));
                                 using (var fileStream = new FileStream(uploadFolder, FileMode.Create)) { 
                                     arquivo.Arquivo.CopyTo(fileStream);
                                 }

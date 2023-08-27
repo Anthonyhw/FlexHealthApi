@@ -72,7 +72,7 @@ namespace FlexHealthInfrastructure.Services
                 var newResult = _newsRepository.CreateNews(mapNew);
                 if (newResult != null)
                 {
-                    string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\NewsImages\" + mapNew.ImagemUrl);
+                    string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources/NewsImages/" + mapNew.ImagemUrl);
                     using (var fileStream = new FileStream(uploadFolder, FileMode.Create))
                     {
                         createNew.Imagem.CopyTo(fileStream);

@@ -82,7 +82,7 @@ namespace FlexHealthInfrastructure.Services
         {
             try
             {
-                var filepath = Path.Combine((_environment.ContentRootPath + @"Resources\Prescriptions\" + fileName));
+                var filepath = Path.Combine((_environment.ContentRootPath + @"Resources/Prescriptions/" + fileName));
                 if (File.Exists(filepath))
                 {
                     return System.IO.File.ReadAllBytes(filepath);
@@ -112,7 +112,7 @@ namespace FlexHealthInfrastructure.Services
                         TipoExame = arquivo.TipoExame,
                         Visibilidade = false
                     });
-                    string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources\Prescriptions\" + arquivo.URL + Path.GetExtension(arquivo.Arquivo.FileName));
+                    string uploadFolder = Path.Combine(_environment.ContentRootPath + @"Resources/Prescriptions/" + arquivo.URL + Path.GetExtension(arquivo.Arquivo.FileName));
                     using (var fileStream = new FileStream(uploadFolder, FileMode.Create))
                     {
                         arquivo.Arquivo.CopyTo(fileStream);
