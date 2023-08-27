@@ -15,11 +15,13 @@ namespace FlexHealthApi.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly ITokenService _tokenService;
+        private readonly IWebHostEnvironment _environment;
 
-        public AccountController(IAccountService accountService, ITokenService tokenService)
+        public AccountController(IAccountService accountService, ITokenService tokenService, IWebHostEnvironment environment)
         {
             _accountService = accountService;
             _tokenService = tokenService;
+            _environment = environment;
         }
 
         [HttpGet("GetUser")]
@@ -154,6 +156,8 @@ namespace FlexHealthApi.Controllers
         {
             try
             {
+                FileName = _environment.ContentRootPath + "/Resources/Images/UserImages/" + FileName;
+
                 var updatePhoto = await _accountService.UpdatePhotoAsync(file, User.Id(), FileName);
                 if (!updatePhoto) return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Atualizar imagem, tente novamente mais tarde.");
                 return Ok(updatePhoto);
