@@ -156,11 +156,12 @@ namespace FlexHealthApi.Controllers
         {
             try
             {
-                FileName = _environment.ContentRootPath + "/Resources/Images/UserImages/" + FileName;
+                FileName = $"{FileName}{Path.GetExtension(file.FileName)}";
+                FileName = Path.Combine(_environment.ContentRootPath, "Resources", "Images", "UserImages", FileName);
 
                 var updatePhoto = await _accountService.UpdatePhotoAsync(file, User.Id(), FileName);
                 if (!updatePhoto) return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Atualizar imagem, tente novamente mais tarde.");
-                return Ok(updatePhoto);
+                return Ok(PhysicalFile(FileName, "image/png"));
 
             }
             catch (Exception ex)

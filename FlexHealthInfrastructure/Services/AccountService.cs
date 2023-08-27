@@ -192,8 +192,6 @@ namespace FlexHealthInfrastructure.Services
         {
             try
             {
-                FileName = $"{FileName}{Path.GetExtension(file.FileName)}";
-
                 var response = _accountRepository.UpdatePhotoAsync(id, FileName);
                 if (response.Result)
                 {
