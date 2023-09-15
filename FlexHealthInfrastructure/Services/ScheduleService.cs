@@ -182,6 +182,36 @@ namespace FlexHealthInfrastructure.Services
                 throw new Exception(ex.Message);
             }
         }
+        
+        public async Task<List<AgendaPorEstabelecimentoDto>> GetScheduleByStablishmentAsync(string stablishment)
+        {
+            try
+            {
+                var schedule = await _scheduleRepository.GetScheduleByStablishmentAsync(stablishment);
+                if (schedule != null)
+                {
+                    var mappedSchedule = _mapper.Map<List<AgendaDto>>(schedule);
+                    var result = new List<AgendaPorEstabelecimentoDto>();
+                    
+                    foreach (var item in mappedSchedule)
+                    {
+                        if (result.Find(s => s.Estabelecimento.Id == item.EstabelecimentoId) == null)
+                        {
+                            var estabelecimento = await _accountRepository.GetUserByIdAsync(item.EstabelecimentoId);
+                            result.Add(new AgendaPorEstabelecimentoDto() { Estabelecimento = estabelecimento, Agenda = new List<AgendaDto>() });
+                        }
+                        result.Find(s => s.Estabelecimento.Id == item.EstabelecimentoId).Agenda.Add(item);
+                    }
+
+                    return result;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public async Task<List<AgendaPorEstabelecimentoDto>> GetScheduleByCityAsync(string city)
         {
             try
@@ -192,7 +222,7 @@ namespace FlexHealthInfrastructure.Services
                     var mappedSchedule = _mapper.Map<List<AgendaDto>>(schedule);
                     var result = new List<AgendaPorEstabelecimentoDto>();
 
-                    foreach ( var item in mappedSchedule)
+                    foreach (  var item in mappedSchedule)
                     {
                         if (result.Find(s => s.Estabelecimento.Id == item.EstabelecimentoId) == null)
                         {

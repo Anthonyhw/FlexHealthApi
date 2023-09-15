@@ -121,9 +121,25 @@ namespace FlexHealthApi.Controllers
             }
         }
 
+        [HttpGet("stablishment-name")]
+        [Authorize]
+        public async Task<IActionResult> GetScheduleByStablishment([FromQuery] string stablishment)
+        {
+            try
+            {
+                var result = await _scheduleService.GetScheduleByStablishmentAsync(stablishment);
+                if (result != null) return Ok(result);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(500, $"Erro ao tentar recuperar agenda: {ex.Message}");
+            }
+        }
+
         [HttpGet("City")]
         [Authorize]
-        public async Task<IActionResult> GetScheduleByCityId([FromQuery] string city)
+        public async Task<IActionResult> GetScheduleByCity([FromQuery] string city)
         {
             try
             {
