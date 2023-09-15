@@ -19,7 +19,7 @@ namespace FlexHealthApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> GetNews()
         {
             try
@@ -36,7 +36,7 @@ namespace FlexHealthApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> GetNewsById(int id)
         {
             try
@@ -70,6 +70,7 @@ namespace FlexHealthApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles="Estabelecimento")]
         public IActionResult RemoveNews(int id)
         {
             try
