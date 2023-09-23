@@ -12,7 +12,7 @@ namespace FlexHealthDomain.Services
         Task<List<UserDto>> GetDoctors(int id);
         Task<SignInResult> CheckUserPasswordAsync(UserDto userUpdateDto, string password);
         Task<UserDto> CreateAccount(RegisterUserDto userDto);
-        Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto);
+        Task<UserDto> UpdateAccount(UserUpdateDto userUpdateDto);
         Task<bool> VerifyCpf(string cpf);
         Task<bool> VerifyRg(string rg);
         Task<bool> VerifyCrm(string crm);

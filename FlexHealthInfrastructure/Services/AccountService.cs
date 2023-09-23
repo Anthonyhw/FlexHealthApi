@@ -159,14 +159,17 @@ namespace FlexHealthInfrastructure.Services
             }
         }
 
-        public async Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto)
+        public async Task<UserDto> UpdateAccount(UserUpdateDto userUpdateDto)
         {
             try
             {
-                var user = await _accountRepository.GetUserAsync(userUpdateDto.Email);
+                var user = await _accountRepository.GetUserAsync(userUpdateDto.UserName);
                 if (user == null) return null;
+                userUpdateDto.UserName = userUpdateDto.Email;
 
                 var updatedUser = _mapper.Map(userUpdateDto, user);
+                updatedUser.NormalizedEmail = updatedUser.UserName.ToUpper();
+                updatedUser.NormalizedUserName = updatedUser.Email.ToUpper();
 
                 if (userUpdateDto.Password != "") {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -177,7 +180,7 @@ namespace FlexHealthInfrastructure.Services
                 {
                     var userRetorno = await _accountRepository.GetUserAsync(user.Email);
 
-                    return _mapper.Map<UserUpdateDto>(userRetorno);
+                    return _mapper.Map<UserDto>(userRetorno);
                 }
 
                 return null;

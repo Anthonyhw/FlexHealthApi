@@ -141,7 +141,7 @@ namespace FlexHealthApi.Controllers
                 {
                     Username = result.UserName,
                     Nome = result.Nome,
-                    Token = _tokenService.GetToken(checkUser).Result
+                    Token = _tokenService.GetToken(result).Result
                 });
             }
             catch (Exception ex)
